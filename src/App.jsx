@@ -1,11 +1,10 @@
 import React from 'react';
+import { RouterProvider } from 'react-router';
+import {router} from "./router/router";
 
 const App = () => {
   return (
-    <section className=" h-screen ">
-      <p className='text-primary'>Première application web avec vite</p>
-      <p className="font-montserrat">une autre application</p>
-    </section>
+    <RouterProvider router={router}/>
   )
 }
 
