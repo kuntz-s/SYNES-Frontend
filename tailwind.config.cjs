@@ -12,6 +12,7 @@ module.exports = {
         'montserrat':['Montserrat','sans-serif']
       },
       backgroundImage: {
+        homeBackground: "url('/src/assets/accueil.png')"
       }
     },
   },
