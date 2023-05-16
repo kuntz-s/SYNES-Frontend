@@ -1,5 +1,5 @@
 import React from 'react';
-import {Helmet as Header} from "react-helmet"
+import { Helmet as Header } from 'react-helmet-async';
 
 const Helmet = ({title, description}) => {
   return (
