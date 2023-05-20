@@ -64,7 +64,7 @@ const LoginComponent = () => {
               draggable: true,
               theme: "light",
             });
-            navigate("/");
+            navigate("/social");
           }
         },2000)
       }
@@ -105,14 +105,14 @@ const LoginComponent = () => {
               type="email"
               value={loginInfo.email}
               handleChange={handleChange}
-              style={{ borderRadius: 0 }}
+              style={{ borderRadius: 0 , backgroundColor:"transparent"}}
             />
             <Input
               title="Mot de passe"
               name="password"
               value={loginInfo.password}
               handleChange={handleChange}
-              style={{ borderRadius: 0 }}
+              style={{ borderRadius: 0 , backgroundColor:"transparent"}}
             />
           </div>
           <div>
