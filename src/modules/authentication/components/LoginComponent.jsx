@@ -71,7 +71,7 @@ const LoginComponent = () => {
   }
 
   return (
-    <section className="overflow-hidden min-h-screen flex flex-col md:flex-row justify-center md:items-center w-[85%] mx-auto py-4 md:py-[0px]">
+    <section className="overflow-hidden min-h-screen flex flex-col md:flex-row justify-center md:items-center w-[85%] mx-auto py-4 md:py-[0px] ">
       <motion.div
       variants={imageContainerVariants}
         initial="hidden"
