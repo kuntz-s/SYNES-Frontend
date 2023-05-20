@@ -1,10 +1,51 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 import teacher from "../../../assets/teacher.png"
 
+
+const imgContainerVariants = {
+  hidden:{
+    y:'-100vw',
+    opacity:0
+  },
+
+  visible:{
+    opacity:1,
+    y:0 ,
+    transition:{
+      type:'tween',
+      duration:1.2
+    }
+  }
+}
+
+const titleContainerVariants = {
+  hidden:{
+    x:'-100vw',
+    opacity:0
+  },
+
+  visible:{
+    opacity:1,
+    x:0 ,
+    transition:{
+      type:'tween', 
+      duration:1.2
+    }
+  }
+}
+ 
+
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
-    <section className="min-h-[80vh] w-[85%] mx-auto flex flex-col md:flex-row  items-center justify-center  md:justify-between ">
-      <div className="mr-2 pl-[2px] text-center md:text-start md:basis-3/5 lg:basis-1/2">
+    <section className="  min-h-[80vh] w-[85%] mx-auto flex flex-col md:flex-row  items-center justify-center  md:justify-between ">
+      <motion.div
+       variants={titleContainerVariants}
+       initial="hidden"
+       animate="visible"
+       className="mr-2 pl-[2px] text-center md:text-start md:basis-3/5 lg:basis-1/2">
         <p className="font-montserrat font-bold text-2xl md:text-3xl">
           <span className="text-primary">Plateforme de gestion du </span>
           <br className="hidden lg:block" />
@@ -36,10 +77,14 @@ const HeroSection = () => {
             En savoir plus
           </button>
         </div>
-      </div>
-      <div className=" md:basis-2/5 lg:basis-1/2  flex  justify-center md:justify-end ml-2">
+      </motion.div>
+      <motion.div 
+       variants={imgContainerVariants}
+       initial="hidden"
+       animate="visible"
+      className=" md:basis-2/5 lg:basis-1/2  flex  justify-center md:justify-end ml-2">
       <img src={teacher} className="scale-[0.9] lg:scale-[0.8] md:translate-y-[-3%] md:translate-x-[20%] shrink-0" alt="teacher"/>
-      </div>
+      </motion.div>
     </section>
   );
 };
