@@ -4,8 +4,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
 import CircularProgress from "@mui/material/CircularProgress";
 import Input from "../../../components/baseComponents/Input";
-import loginImage from "../../../assets/loginIllustration.png";
-import logo from "../../../assets/logo.png";
+import loginImage from "../../../assets/img/loginIllustration.png";
+import logo from "../../../assets/img/logo.png";
 
 
 

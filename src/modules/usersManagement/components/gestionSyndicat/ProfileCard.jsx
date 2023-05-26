@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { BsPencil } from "react-icons/bs";
 import StatTitle from "../../../../components/baseComponents/StatTitle";
-import Profile from "../../../../assets/profile.png";
+import Profile from "../../../../assets/img/profile.png";
 
 const ProfileCard = () => {
     const navigate = useNavigate()

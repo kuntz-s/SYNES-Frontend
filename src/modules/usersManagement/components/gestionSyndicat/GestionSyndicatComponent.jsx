@@ -2,6 +2,7 @@ import React from 'react';
 import CardsList from "./CardsList";
 import ProfileCard from "./ProfileCard";
 import ChartsList from './ChartsList';
+import UniversitiesList from './UniversitiesList';
 
 const GestionSyndicatComponent = () => {
   return (
@@ -9,7 +10,7 @@ const GestionSyndicatComponent = () => {
           <div className="md:col-span-3">
             <CardsList universités={10} organes={5} membres={50} />
             <ChartsList/>
-          
+          <UniversitiesList/>
           </div>
           <div>
             <ProfileCard />

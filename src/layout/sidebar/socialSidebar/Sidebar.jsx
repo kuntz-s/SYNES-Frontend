@@ -15,8 +15,8 @@ import { GrHomeRounded } from "react-icons/gr";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdHomeFilled, MdDashboard, MdOutlineDashboard ,MdOutlineHome} from "react-icons/md";
 import { IoPersonCircleOutline, IoPersonCircleSharp } from "react-icons/io5";
-import logo from "../../../assets/logo.png";
-import whiteLogo from "../../../assets/whiteLogo.png"
+import logo from "../../../assets/img/logo.png";
+import whiteLogo from "../../../assets/img/whiteLogo.png"
 
 const sidebarItems = [
   {

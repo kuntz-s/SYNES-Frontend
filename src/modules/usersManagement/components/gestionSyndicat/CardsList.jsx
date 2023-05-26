@@ -10,7 +10,7 @@ const CardsList = ({ universités, organes, membres }) => {
     {
       name: "Nombre de membres du SYNES",
       value: membres,
-      icon: <MdGroups />,
+      icon: <MdGroups className="scale-[1.3]" />,
       color: "#10b981",
       backgroundColor: "#ecfdf5",
     },

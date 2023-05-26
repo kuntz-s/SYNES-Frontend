@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-import teacher from "../../../assets/teacher.png"
+import teacher from "../../../assets/img/teacher.png"
 
 
 const imgContainerVariants = {
