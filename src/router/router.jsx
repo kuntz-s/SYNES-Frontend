@@ -1,8 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
+import CountUp from "react-countup";
 import HomePage from "../modules/home/pages/HomePage";
 import LoginPage from "../modules/authentication/pages/LoginPage";
-import SidebarMenu from "../layout/sidebar/SidebarMenu";
+import SidebarMenu from "../layout/sidebar/socialSidebar/SidebarMenu";
+import DashboardSidebarMenu from "../layout/sidebar/dashboardSidebar/DashboardSidebarMenu";
+import GestionSyndicat from "../modules/usersManagement/pages/GestionSyndicat";
 
 export const router = createBrowserRouter(
     [
@@ -22,11 +25,14 @@ export const router = createBrowserRouter(
           children:[
               {
                 path:"/social/dashboard",
-                element:<div><p>Stephane</p><Outlet/></div>,
+                element:<DashboardSidebarMenu/>,
                 children:[
                   {
-                    path:"/social/dashboard",
-                    element:<div>stephane dashboard</div>
+                    path:"/social/dashboard/gestion-syndicat",
+                    element:<GestionSyndicat/>
+                  },{
+                    path:"/social/dashboard/*",
+                    element:<div>autre gestion</div>
                   }
                 ]
               },
