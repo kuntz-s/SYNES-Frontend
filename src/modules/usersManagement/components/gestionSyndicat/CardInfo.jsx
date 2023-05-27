@@ -8,7 +8,7 @@ const CardStat = ({data}) => {
             {data.icon}
         </div>
         <div className=" break-word">
-        <p className="text-primary font-bold text-2xl"><CountUp end={data.value}/></p>
+        <p className="text-primary font-bold text-2xl"><CountUp end={data.value} duration={4}/></p>
         <p className="text-md text-gray leading-5">{data.name}</p>
         </div>
     </div>

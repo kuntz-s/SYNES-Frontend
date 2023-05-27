@@ -7,25 +7,21 @@ import Input from "../../../components/baseComponents/Input";
 import loginImage from "../../../assets/img/loginIllustration.png";
 import logo from "../../../assets/img/logo.png";
 
-
-
 const imageContainerVariants = {
-  hidden:{
-    x:'-100vw',
-    opacity:0
+  hidden: {
+    x: "-100vw",
+    opacity: 0,
   },
 
-  visible:{
-    opacity:1,
-    x:0 ,
-    transition:{
-      type:'tween', 
-      duration:1.2
-    }
-  }
-}
-
- 
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: "tween",
+      duration: 1.2,
+    },
+  },
+};
 
 const LoginComponent = () => {
   const navigate = useNavigate();
@@ -43,53 +39,54 @@ const LoginComponent = () => {
   };
 
   const handleLogin = () => {
-   
-      if(!isLoading){
-        setIsLoading(true);
-        setTimeout(() => {
-          if(!loginInfo.email || !loginInfo.password){
-            toast.error("Veuillez entrer des valeurs correctes", {
-              position: "top-right",
-              autoClose: 3000,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "light",
-            });
-            setIsLoading(false)
-          } else {
-            toast.success("connexion réussie", {
-              position: "top-right",
-              autoClose: 3000,
-              pauseOnHover: true,
-              draggable: true,
-              theme: "light",
-            });
-            navigate("/social");
-          }
-        },2000)
-      }
-  }
+    if (!isLoading) {
+      setIsLoading(true);
+      setTimeout(() => {
+        if (!loginInfo.email || !loginInfo.password) {
+          toast.error("Veuillez entrer des valeurs correctes", {
+            position: "top-right",
+            autoClose: 3000,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "light",
+          });
+          setIsLoading(false);
+        } else {
+          toast.success("connexion réussie", {
+            position: "top-right",
+            autoClose: 3000,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "light",
+          });
+          navigate("/social");
+        }
+      }, 2000);
+    }
+  };
 
   return (
     <section className="overflow-hidden min-h-screen flex flex-col md:flex-row justify-center md:items-center w-[85%] mx-auto py-4 md:py-[0px] ">
       <motion.div
-      variants={imageContainerVariants}
+        variants={imageContainerVariants}
         initial="hidden"
         animate="visible"
-      className=" md:basis-1/2 mx-auto md:pr-2">
+        className=" md:basis-1/2 mx-auto md:pr-2"
+      >
         <img
           src={loginImage}
           alt="login"
           className="scale-[1.1] origin-left shrink-0 md:translate-x-[-50px] lg:translate-x-[0px]"
         />
       </motion.div>
-      <div 
-      className="md:basis-1/2 flex  flex-col items-center text-center  ">
+      <div className="md:basis-1/2 flex  flex-col items-center text-center  ">
         <img
           src={logo}
           alt="logo"
           className="w-[65px] md:w-[90px] h-[65px] md:h-[90px] hover:cursor-pointer"
-          onClick={() => {navigate("/")}}
+          onClick={() => {
+            navigate("/");
+          }}
         />
         <div className="mt-2">
           <p className="font-montserrat font-bold text-2xl">Connectez-vous</p>
@@ -105,26 +102,34 @@ const LoginComponent = () => {
               type="email"
               value={loginInfo.email}
               handleChange={handleChange}
-              style={{ borderRadius: 0 , backgroundColor:"transparent"}}
+              style={{ borderRadius: 0, backgroundColor: "transparent" }}
             />
             <Input
               title="Mot de passe"
               name="password"
               value={loginInfo.password}
               handleChange={handleChange}
-              style={{ borderRadius: 0 , backgroundColor:"transparent"}}
+              style={{ borderRadius: 0, backgroundColor: "transparent" }}
             />
           </div>
           <div>
-            <button className="bg-primary text-white w-full py-2 mt-4 text-sm hover:bg-primary/90 hover:cursor-pointer" onClick={handleLogin}>
-            {isLoading && <CircularProgress size="18px" color="inherit" />}
-              {!isLoading && "connexion"}
+            <button
+              className="bg-primary text-white w-full py-2 mt-4 text-sm hover:bg-primary/90 hover:cursor-pointer"
+              onClick={handleLogin}
+            >
+              {isLoading ? (
+                <CircularProgress size="18px" color="inherit" />
+              ) : (
+                <span>connexion</span>
+              )}
             </button>
-            <p className="text-center hover:underline hover:cursor-pointer text-sm my-3">Mot de passe oublié ?</p>
+            <p className="text-center hover:underline hover:cursor-pointer text-sm my-3">
+              Mot de passe oublié ?
+            </p>
           </div>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </section>
   );
 };

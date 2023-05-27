@@ -12,7 +12,7 @@ const ChartsList = () => {
         { name: "Université de douala", value: 5 }
       ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2  gap-4 my-6">
+    <div className="grid grid-cols-1 md:grid-cols-2  gap-4 ">
       <div className="bg-white p-4 rounded-xl h-fit overflow-auto">
         <StatTitle title="Nombre de membres par université" />
         <BarChart data={data}/>

@@ -1,13 +1,20 @@
-.css-80pr5n-MuiPaper-root{
+.mtr .css-80pr5n-MuiPaper-root{
     box-shadow: none !important;
 }
 
 .mtr td{
-    border-bottom:1px solid #f7f7f7 ;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    border-bottom:none ;
+    padding-top: 13px;
+    padding-bottom: 13px;
 }
 
 .mtr th{
-    border-bottom:1px solid #f7f7f7 ;
+    border-bottom:none ;
+}
+
+
+.mtr .css-1iisq5m {
+    color:#475569;
+    margin-top:1px;
+    font-size:16px; 
 }
