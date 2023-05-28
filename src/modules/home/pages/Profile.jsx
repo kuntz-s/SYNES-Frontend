@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useCallback, useContext} from "react";
 import Image from 'next/image'; //dossier des images 
-import {useDropzone} from react-dropzone;
+import {useDropzone} from 'react-dropzone';
 //pour le formulaire
 import {HiOutlineMail} from 'react-icons/hi';
 import {TiSocialFacebook, TiSocialTwitter, TiSocialInstagram} from 'react-icons/ti';
 
 
-import images from '../../../assets';
+//import images from '../../../assets';
 
 
 const Profile = () => {
