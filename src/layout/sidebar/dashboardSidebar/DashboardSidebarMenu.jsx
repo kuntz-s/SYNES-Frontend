@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import {
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from "react-icons/bs";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardTopbar from "./DashboardTopbar";
 
@@ -23,9 +27,19 @@ const DashboardSidebarMenu = () => {
       {/**sidebar */}
       <div className="relative shadow-xl border-r border-slate-300">
         <DashboardSidebar shrink={shrink} />
+        <div className="absolute right-[-10px] top-5 hover:cursor-pointer z-50 rounded-full bg-white ">
+            <BsFillArrowRightCircleFill
+              className={shrink ? `text-secondary text-xl  ` : "hidden"}
+              onClick={changeShrink}
+            />
+            <BsFillArrowLeftCircleFill
+              className={!shrink ? `text-secondary text-xl  ` : "hidden"}
+              onClick={changeShrink}
+            />
+          </div>
       </div>
 
-      <div className="bg-[#EAEDEF] w-full relative min-h-screen ">
+      <div className="bg-[#EAEDEF] w-full relative min-h-screen overflow-hidden">
         <DashboardTopbar shrink={shrink} changeShrink={changeShrink}/>
 
         <div className="w-full p-4">
