@@ -42,7 +42,7 @@ const UniversitiesList = () => {
           {cell.getValue() ? (
            <img src={ cell.getValue()} alt="logo uni" className=" mx-auto rounded-full object-cover w-10 h-10"  />
           ) : (
-            <span className="font-roboto font-semibold text-slate-800">
+            <span className="font-montserrat text-primary text-md">
               Aucune photo
             </span>
           )}
@@ -55,7 +55,7 @@ const UniversitiesList = () => {
       header: "Nom",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
       Cell: ({ cell }) => (
-        <span className="font-roboto font-semibold text-slate-800">
+        <span className="font-montserrat text-primary text-md">
           {cell.getValue()}
         </span>
       ), //optional custom cell render
@@ -66,7 +66,7 @@ const UniversitiesList = () => {
       header: "Localisation",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
       Cell: ({ cell }) => (
-        <span className="font-roboto font-semibold text-slate-800">
+        <span className="font-montserrat text-primary text-md">
           {cell.getValue()}
         </span>
       ), //optional custom cell render

@@ -3,13 +3,13 @@
 }
 
 .mtr td{
-    border-bottom:none ;
-    padding-top: 13px;
-    padding-bottom: 13px;
+    border-bottom:1px solid #e0e4e9 ;
+    padding-top: 18px;
+    padding-bottom: 18px;
 }
 
 .mtr th{
-    border-bottom:none ;
+    border-bottom:1px solid #e0e4e9 ;
 }
 
 

@@ -12,12 +12,15 @@ const GestionSyndicat = () => {
       />
       <section className="w-full ">
         <div className="text-center md:text-start">
-          <p className="font-roboto text-slate-500 text-md">Bienvenue</p>
-          <p className="capitalize text-2xl font-semibold text-slate-800 leading-5 tracking-wide">
-            Nchouwet Stephane
+          <p className="font-roboto text-slate-700 text-md">
+            Bienvenue{"  "}
+            <span className="capitalize text-xl font-semibold text-secondary leading-5 tracking-wide">
+              Nchouwet Stephane
+            </span>
           </p>
+          <p className="text-slate-700 text-md mt-1">Vous ètes connectés en tant que <span className="text-secondary font-bold"> sécrétaire section synes</span></p>
         </div>
-       <GestionSyndicatComponent/>
+        <GestionSyndicatComponent />
       </section>
     </HelmetProvider>
   );

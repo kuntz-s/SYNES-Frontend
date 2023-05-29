@@ -23,7 +23,7 @@ const DashboardSidebarMenu = () => {
   }
 
   return (
-    <section className="flex min-h-screen  ">
+    <section className="flex min-h-screen relative  ">
       {/**sidebar */}
       <div className="relative shadow-xl border-r border-slate-300">
         <DashboardSidebar shrink={shrink} />
@@ -39,10 +39,10 @@ const DashboardSidebarMenu = () => {
           </div>
       </div>
 
-      <div className="bg-[#EAEDEF] w-full relative min-h-screen overflow-hidden">
+      <div className="bg-[#f0fdfa] w-full min-h-screen overflow-hidden ">
         <DashboardTopbar shrink={shrink} changeShrink={changeShrink}/>
 
-        <div className="w-full p-4">
+        <div className="w-full p-4 ">
           <Outlet />
         </div>
       </div>
