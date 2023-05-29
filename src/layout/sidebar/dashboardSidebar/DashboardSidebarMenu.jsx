@@ -1,42 +1,35 @@
-import react, { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import {
-  BsFillArrowRightCircleFill,
-  BsFillArrowLeftCircleFill,
-} from "react-icons/bs";
 import DashboardSidebar from "./DashboardSidebar";
+import DashboardTopbar from "./DashboardTopbar";
 
 const DashboardSidebarMenu = () => {
   const [shrink, setShrink] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if(location.pathname === "/dashboard"){
-      navigate('/dashboard/')
+    if (location.pathname === "/dashboard") {
+      navigate("/dashboard/");
     }
-  },[location ,navigate])
+  }, [location, navigate]);
+
+  const changeShrink=() => {
+    setShrink(!shrink);
+  }
+
   return (
     <section className="flex min-h-screen  ">
-
       {/**sidebar */}
       <div className="relative shadow-xl border-r border-slate-300">
         <DashboardSidebar shrink={shrink} />
       </div>
 
-      <div className="bg-white w-full relative ">
-          <div className="absolute bg-transparent left-[-10px] top-7 hover:cursor-pointer z-50 rounded-full ">
-            <BsFillArrowRightCircleFill
-              className={shrink ? `text-secondary text-xl  ` : "hidden"}
-              onClick={() => setShrink(!shrink)}
-            />
-            <BsFillArrowLeftCircleFill
-              className={!shrink ? `text-secondary text-xl  ` : "hidden"}
-              onClick={() => setShrink(!shrink)}
-            />
-          </div>
-        <div className=" w-full min-h-screen bg-[#EAEDEF] px-6 py-4 ">
-        <Outlet/>
+      <div className="bg-[#EAEDEF] w-full relative min-h-screen ">
+        <DashboardTopbar shrink={shrink} changeShrink={changeShrink}/>
+
+        <div className="w-full p-4">
+          <Outlet />
         </div>
       </div>
     </section>
