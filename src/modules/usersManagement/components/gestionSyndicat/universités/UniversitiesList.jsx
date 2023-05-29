@@ -165,6 +165,7 @@ const UniversitiesList = () => {
         handleChange={handleChange}
         data={universityInfo}
       />
+      <ToastContainer/>
     </div>
   );
 };

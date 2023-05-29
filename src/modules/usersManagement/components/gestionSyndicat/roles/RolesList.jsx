@@ -1,52 +1,123 @@
 import React, { useState } from "react";
-import { BsPlus, BsPrinter } from "react-icons/bs";
+import { BsPlus, BsPrinter, BsEye } from "react-icons/bs";
+import { ToastContainer, toast } from "react-toastify";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
+import RolesModal from "./RolesModal";
+
+const organsList = [
+  {
+    id:1,
+    nom: "Congrès",
+    description: "haute instance du synes",
+  },
+  {
+    id:2,
+    nom: "Bureau exécutif national",
+    description: "description BEN",
+  },
+  {
+    id:3,
+    nom: "Section ngoa ekelle",
+    description: "description section ngoa ekelle",
+  },
+];
 
 const RolesList = () => {
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [roleInfo, setRoleInfo] = useState({
+    nom: "",
+    description: "",
+    idOrgane: "",
+    organe: "",
+  });
+  
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setRoleInfo({
+      nom: "",
+      description: "",
+      idOrgane: "",
+      organe: "",
+    });
+    setOpen(false);
+  };
+
   const [data, setData] = useState([
     {
-      name: "NCHOUWET MFOUAPON", // key "name" matches `accessorKey` in ColumnDef down below
-      surname: "kuntz stephane",
-      age: 20, // key "age" matches `accessorKey` in ColumnDef down below
+      id: 1,
+      nom: "Sécrétaire congrès", // key "name" matches `accessorKey` in ColumnDef down below
+      description: "Sécrétaire en charge de faire ceci ou cela",
+      organe: "Congrès", // key "age" matches `accessorKey` in ColumnDef down below
     },
     {
-      name: "NCHOUWET GHANE",
-      surname: "eliezer loic",
-      age: 25,
-    },
-    {
-      name: "NZIE NCHOUWET",
-      surname: "Richelle Leslie",
-      age: 35,
+      id: 2,
+      nom: "Sécrétaire général bureau executif national",
+      description: "sécrétaire en tète du bureau executif national",
+      organe: "Bureau exécutif national",
     },
   ]);
 
   const columns = [
     {
-      accessorFn: (row) => row.name, //simple recommended way to define a column
-      header: "Nom",
+      accessorFn: (row) => row.nom, //simple recommended way to define a column
+      header: "Nom du role",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span >{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
       // size:258
     },
     {
-      accessorFn: (row) => row.surname, //simple recommended way to define a column
-      header: "Prenom",
+      accessorFn: (row) => row.description, //simple recommended way to define a column
+      header: "Description du role",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span >{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
     },
     {
-      accessorFn: (row) => row.age, //simple recommended way to define a column
-      header: "Age",
+      accessorFn: (row) => row.organe, //simple recommended way to define a column
+      header: "Organe associé",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span >{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
+    },
+
+    {
+      accessorFn: (row) => row.id, //simple recommended way to define a column
+      header: "Permissions",
+      muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
+      Cell: ({ cell }) => (
+        <p className="text-secondary hover:underline hover:cursor-pointer flex items-center">
+          <BsEye className="mr-1 " /> <span>Visualiser</span>
+        </p>
+      ), //optional custom cell render
     },
   ];
 
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    setRoleInfo({ ...roleInfo, [name]: value });
+  };
+
   const handleAdd = () => {
-    console.log("add");
+    setIsLoading(true);
+    setRoleInfo({...roleInfo, idOrgane:organsList.find((elt) =>elt.nom=== roleInfo.organe).id})
+    setTimeout(() => {
+      setData([...data, {...roleInfo}]);
+      setIsLoading(false);
+      handleClose();
+      toast.success("Nouveau role ajouté", {
+        position: "top-center",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    }, 3000);
   };
   const handleEdit = (value, id) => {
     console.log("edit");
@@ -63,9 +134,7 @@ const RolesList = () => {
           <Button
             title="Nouveau role"
             icon={<BsPlus className="mr-2 scale-[1.8]" />}
-            handleClick={() => {
-              alert("test");
-            }}
+            handleClick={handleOpen}
             filled={true}
             className=" font-semibold bg-secondary mr-2 border-secondary hover:bg-white hover:shadow-md hover:text-secondary rounded-md"
           />
@@ -89,8 +158,18 @@ const RolesList = () => {
           name="role"
         />
       </div>
+      <RolesModal
+        open={open}
+        addRole={handleAdd}
+        isLoading={isLoading}
+        handleClose={handleClose}
+        handleChange={handleChange}
+        data={roleInfo}
+        organsList ={organsList}
+      />
+      <ToastContainer />
     </div>
   );
-}
+};
 
-export default RolesList
+export default RolesList;
