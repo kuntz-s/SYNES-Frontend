@@ -11,10 +11,9 @@ const GestionSyndicatComponent = () => {
         <CardsList universités={10} organes={5} membres={50} />
         <ChartsList />
         <UniversitiesList />
-        {/* 
         
         <OrgansList />
-        <RolesList/> */}
+        <RolesList/> 
     </div>
   );
 };

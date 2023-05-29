@@ -6,10 +6,15 @@
     border-bottom:1px solid #e0e4e9 ;
     padding-top: 18px;
     padding-bottom: 18px;
+    font-family: 'Montserrat';
+    color:#0f172a;
+    font-size: 1rem;
 }
 
 .mtr th{
     border-bottom:1px solid #e0e4e9 ;
+    font-family:'Montserrat';
+    font-size:14px;
 }
 
 

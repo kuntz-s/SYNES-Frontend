@@ -36,13 +36,13 @@ const UniversitiesList = () => {
     {
       accessorFn: (row) => row.logo, //simple recommended way to define a column
       header: "Logo",
-      muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
+      muiTableHeadCellProps: { sx: { color: "#475569" } }, //optional custom props
       Cell: ({ cell }) => (
         <div className="w-full">
           {cell.getValue() ? (
            <img src={ cell.getValue()} alt="logo uni" className=" mx-auto rounded-full object-cover w-10 h-10"  />
           ) : (
-            <span className="font-montserrat text-primary text-md">
+            <span >
               Aucune photo
             </span>
           )}
@@ -53,9 +53,9 @@ const UniversitiesList = () => {
     {
       accessorFn: (row) => row.nom, //simple recommended way to define a column
       header: "Nom",
-      muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
+      muiTableHeadCellProps: { sx: { color: "#475569" } }, //optional custom props
       Cell: ({ cell }) => (
-        <span className="font-montserrat text-primary text-md">
+        <span >
           {cell.getValue()}
         </span>
       ), //optional custom cell render
@@ -64,9 +64,9 @@ const UniversitiesList = () => {
     {
       accessorFn: (row) => row.localisation, //simple recommended way to define a column
       header: "Localisation",
-      muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
+      muiTableHeadCellProps: { sx: { color: "#475569" } }, //optional custom props
       Cell: ({ cell }) => (
-        <span className="font-montserrat text-primary text-md">
+        <span >
           {cell.getValue()}
         </span>
       ), //optional custom cell render

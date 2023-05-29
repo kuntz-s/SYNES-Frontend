@@ -28,20 +28,20 @@ const RolesList = () => {
       accessorFn: (row) => row.name, //simple recommended way to define a column
       header: "Nom",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span className="font-roboto font-semibold text-slate-800">{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span >{cell.getValue()}</span>, //optional custom cell render
       // size:258
     },
     {
       accessorFn: (row) => row.surname, //simple recommended way to define a column
       header: "Prenom",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span className="font-roboto font-semibold text-slate-800">{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span >{cell.getValue()}</span>, //optional custom cell render
     },
     {
       accessorFn: (row) => row.age, //simple recommended way to define a column
       header: "Age",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span className="font-roboto font-semibold text-slate-800 ">{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span >{cell.getValue()}</span>, //optional custom cell render
     },
   ];
 
