@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
-import StatTitle from "../../../../components/baseComponents/StatTitle";
-import Button from "../../../../components/baseComponents/Button";
-import MaterialTable from "../../../../components/baseComponents/MaterialTable";
+import StatTitle from "../../../../../components/baseComponents/StatTitle";
+import Button from "../../../../../components/baseComponents/Button";
+import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 
 const OrgansList = () => {
     const [data, setData] = useState([

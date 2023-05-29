@@ -8,7 +8,7 @@ const Button = ({ title, icon, handleClick, filled, className, loading }) => {
         !filled
           ? " border-primary bg-transparent text-primary hover:bg-primary hover:text-white "
           : " bg-primary text-white border-primary  hover:bg-transparent hover:text-primary"
-      } hover:cursor-pointer border px-4 flex items-center   ${className}
+      } hover:cursor-pointer border px-4 flex items-center  py-2  ${className}
       `}
       onClick={handleClick}
       disabled={loading&& true }

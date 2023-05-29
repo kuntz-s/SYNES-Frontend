@@ -117,10 +117,6 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    window.location.pathname.includes("dashboard") && setShrink(true)
-  },[])
-
   const verifyResponsive = () => {
     if(shrink || (mdScreen && !lgScreen)){
       return true
@@ -131,25 +127,18 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
 
   const handleNavigation = (id, link)=> {
     navigate("/social/"+link);
-    if(id===6){
-      setShrink(true)
-    } else {
-      if(shrink){
-        setShrink(false)
-      }
-    }
   }
 
   return (
-    <section >
+    <section className={`${location.pathname.includes("/dashboard")&& "hidden"}`}>
       <motion.div
         variants={sidebarContainerVariants}
         animate={smScreen ? "hidden" : verifyResponsive()? "reduced":"normal"}
-        className={`${shrink && "bg-secondary rounded-r-2xl" } h-screen overflow-y-auto shrink-0 sticky top-0 p-3 border-r border-[#d1d5db]   md:block`}
+        className="h-screen overflow-y-auto shrink-0 sticky top-0 p-3 border-r border-[#d1d5db]   md:block"
       >
         <div className="flex justify-center items-center my-2 ">
           <img
-            src={!shrink ? logo : whiteLogo }
+            src={logo}
             alt="dossier medical"
             width={60}
             height={60}
@@ -164,7 +153,7 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
                 variants={hoverButtonVariants}
                 whileHover={verifyResponsive() ? "hoverShrink":"hover"}
                 key={item.id}
-                className={`${shrink? "bg-secondary hover:bg-white/40 text-slate-200":"bg-white text-primary"} relative hover:cursor-pointer  flex items-center my-2 p-3 rounded-md `}
+                className="bg-white text-primary relative hover:cursor-pointer  flex items-center my-2 p-3 rounded-md "
                 onClick={() => handleNavigation(item.id, item.link)}
               >
                 <span className="text-xl">

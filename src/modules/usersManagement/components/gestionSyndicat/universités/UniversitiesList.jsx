@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import UniversityModal from "./UniversityModal";
-import StatTitle from "../../../../components/baseComponents/StatTitle";
-import Button from "../../../../components/baseComponents/Button";
-import MaterialTable from "../../../../components/baseComponents/MaterialTable";
+import StatTitle from "../../../../../components/baseComponents/StatTitle";
+import Button from "../../../../../components/baseComponents/Button";
+import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 
 const UniversitiesList = () => {
   const [open, setOpen] = useState(false);
@@ -125,7 +125,7 @@ const UniversitiesList = () => {
   };
 
   return (
-    <div className="bg-white  p-4 rounded-xl h-fit">
+    <div className="bg-white w-full  p-4 rounded-xl h-fit overflow-hidden">
       <div className="flex flex-col md:flex-row  justify-between mt-2">
         <StatTitle title="Liste des universités" />
         <div className="flex ">
@@ -147,7 +147,7 @@ const UniversitiesList = () => {
           />
         </div>
       </div>
-      <div className="my-4">
+      <div className="my-4 ">
         <MaterialTable
           data={data}
           columnsList={columns}

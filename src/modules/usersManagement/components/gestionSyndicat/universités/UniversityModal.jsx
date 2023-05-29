@@ -4,9 +4,9 @@ import { FaUniversity } from "react-icons/fa";
 import { GoLocation } from "react-icons/go";
 import { ToastContainer, toast } from "react-toastify";
 import Modal from "@mui/material/Modal";
-import ModalWrapper from "../../../../components/baseComponents/ModalWrapper";
-import Input from "../../../../components/baseComponents/Input";
-import Button from "../../../../components/baseComponents/Button";
+import ModalWrapper from "../../../../../components/baseComponents/ModalWrapper";
+import Input from "../../../../../components/baseComponents/Input";
+import Button from "../../../../../components/baseComponents/Button";
 
 const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity, isLoading }) => {
 

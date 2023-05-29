@@ -35,7 +35,7 @@ const DashboardSidebarMenu = () => {
               onClick={() => setShrink(!shrink)}
             />
           </div>
-        <div className=" w-full min-h-screen bg-teal-50 px-6 py-4">
+        <div className=" w-full min-h-screen bg-[#EAEDEF] px-6 py-4 ">
         <Outlet/>
         </div>
       </div>
