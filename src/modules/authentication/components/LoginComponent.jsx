@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { loginUser } from "../../../redux/userSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import Input from "../../../components/baseComponents/Input";
 import loginImage from "../../../assets/img/loginIllustration.png";
@@ -25,12 +27,30 @@ const imageContainerVariants = {
 
 const LoginComponent = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, loading, userInfo, userToken } = useSelector((state) => state.user);
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if(userToken){
+      navigate("/social")
+    } else {
+      if(error ){
+        toast.error("Utilisateur non trouvé", {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      } else if(Object.keys(userInfo).length >0 && !error){
+        navigate("/social")
+      }
+    }
+  },[error, userInfo])
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -39,29 +59,19 @@ const LoginComponent = () => {
   };
 
   const handleLogin = () => {
-    if (!isLoading) {
-      setIsLoading(true);
-      setTimeout(() => {
-        if (!loginInfo.email || !loginInfo.password) {
-          toast.error("Veuillez entrer des valeurs correctes", {
-            position: "top-right",
-            autoClose: 3000,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "light",
-          });
-          setIsLoading(false);
-        } else {
-          toast.success("connexion réussie", {
-            position: "top-right",
-            autoClose: 3000,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "light",
-          });
-          navigate("/social");
-        }
-      }, 2000);
+    if (!loginInfo.email || !loginInfo.password) {
+      toast.error("Veuillez renseigner des valeurs sur tous les champs", {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    } else {
+      dispatch(
+        loginUser({ email: loginInfo.email, password: loginInfo.password })
+      );
+     
     }
   };
 
@@ -80,6 +90,7 @@ const LoginComponent = () => {
         />
       </motion.div>
       <div className="md:basis-1/2 flex  flex-col items-center text-center  ">
+        
         <img
           src={logo}
           alt="logo"
@@ -91,7 +102,7 @@ const LoginComponent = () => {
         <div className="mt-2">
           <p className="font-montserrat font-bold text-2xl">Connectez-vous</p>
           <p className="text-gray">
-            Veuillez entrer vos identifiants de connexion
+            Veuillez entrer vos identifiants de connexion 
           </p>
         </div>
         <div className="w-full md:w-[350px] mx-auto mt-4">
@@ -117,7 +128,7 @@ const LoginComponent = () => {
               className="bg-primary text-white w-full py-2 mt-4 text-sm hover:bg-primary/90 hover:cursor-pointer"
               onClick={handleLogin}
             >
-              {isLoading ? (
+              {loading ? (
                 <CircularProgress size="18px" color="inherit" />
               ) : (
                 <span>connexion</span>
