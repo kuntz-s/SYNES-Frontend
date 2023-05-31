@@ -12,7 +12,7 @@ const universitéList = [
   "Université de douala",
 ];
 
-const OrgansList = () => {
+const OrgansList = ({organs}) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [organInfo, setOrganInfo] = useState({
@@ -33,21 +33,6 @@ const OrgansList = () => {
     setOpen(false);
   };
 
-  const [data, setData] = useState([
-    {
-      nom: "Congrès", // key "name" matches `accessorKey` in ColumnDef down below
-      description: "Organe suprème du SYNES",
-      fondAlloue: 0,
-      idUniversite: 1, // key "age" matches `accessorKey` in ColumnDef down below
-    },
-    {
-      nom: "Bureau exécutif national",
-      description:
-        "Organe chargé de prendre les décisions concernant tel ou tel",
-      fondAlloue: 2500000,
-      idUniversite: null,
-    },
-  ]);
 
   const columns = [
     {
@@ -93,7 +78,7 @@ const OrgansList = () => {
   const handleAdd = () => {
     setIsLoading(true);
     setTimeout(() => {
-      setData([...data, {...organInfo, idUniversite:null}]);
+     // setData([...data, {...organInfo, idUniversite:null}]);
       setIsLoading(false);
       handleClose();
       toast.success("Nouvel organe ajouté", {
@@ -137,7 +122,7 @@ const OrgansList = () => {
       </div>
       <div className="my-4">
         <MaterialTable
-          data={data}
+          data={organs}
           columnsList={columns}
           handleEdit={handleEdit}
           handleDelete={handleDelete}

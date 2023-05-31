@@ -35,7 +35,7 @@ const DashboardTopbar = ({shrink, changeShrink}) => {
             </p>
             <img
               src={profile}
-              className="shrink-0 rounded-full  h-[30px] w-[30px] md:h-[40px] md:w-[40px] "
+              className="shrink-0 rounded-full  h-[30px] w-[30px] md:h-[40px] md:w-[40px] object-cover"
             />
           </div>
         </div>

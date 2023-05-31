@@ -23,15 +23,11 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-//initialise token from localStorage
-const userToken = localStorage.getItem("userToken")
-  ? localStorage.getItem("userToken")
-  : null;
+
 
 const initialState = {
   loading: false,
   userInfo: {}, // for user object
-  userToken, // for storing the JWT
   error: null,
   success: false, // for monitoring the registration process.
 };
@@ -39,7 +35,13 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser:(state,action) =>{
+        state.userInfo = {};
+        state.error= null;
+        state.success = false;
+    }
+  },
   extraReducers: (builder) => {
     builder
       //login user
@@ -51,7 +53,6 @@ const userSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.userInfo = action.payload;
-        state.userToken = action.payload.token;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -59,5 +60,7 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const { logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

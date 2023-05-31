@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { HelmetProvider } from "react-helmet-async";
+import { getUniversitiesList, getOrgansList } from "../../../redux/gestionSyndicatSlice";
 import Helmet from "../../../components/Helmet/Helmet";
 import GestionSyndicatComponent from "../components/gestionSyndicat/GestionSyndicatComponent";
 
 const GestionSyndicat = () => {
+  const dispatch = useDispatch();
+  const { universities, organs } = useSelector(
+    (state) => state.gestionSyndicat
+  );
+
+  useEffect(() => {
+    dispatch(getUniversitiesList());
+    dispatch(getOrgansList())
+  }, [dispatch]);
   return (
     <HelmetProvider>
       <Helmet
@@ -18,9 +29,15 @@ const GestionSyndicat = () => {
               Nchouwet Stephane
             </span>
           </p>
-          <p className="text-slate-700 text-md mt-1">Vous ètes connectés en tant que <span className="text-secondary font-bold"> sécrétaire section synes</span></p>
+          <p className="text-slate-700 text-md mt-1">
+            Vous ètes connectés en tant que{" "}
+            <span className="text-secondary font-bold">
+              {" "}
+              sécrétaire section synes
+            </span>
+          </p>
         </div>
-        <GestionSyndicatComponent />
+        <GestionSyndicatComponent universities={universities} organs={organs} />
       </section>
     </HelmetProvider>
   );

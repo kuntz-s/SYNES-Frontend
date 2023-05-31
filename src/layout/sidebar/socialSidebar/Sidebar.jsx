@@ -1,6 +1,7 @@
 import React, { useState , useEffect} from "react";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   BsSearch,
   BsBellFill,
@@ -11,12 +12,11 @@ import {
   BsCalendar2DayFill,
 } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
-import { GrHomeRounded } from "react-icons/gr";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdHomeFilled, MdDashboard, MdOutlineDashboard ,MdOutlineHome} from "react-icons/md";
 import { IoPersonCircleOutline, IoPersonCircleSharp } from "react-icons/io5";
+import { logoutUser } from "../../../redux/userSlice";
 import logo from "../../../assets/img/logo.png";
-import whiteLogo from "../../../assets/img/whiteLogo.png"
 
 const sidebarItems = [
   {
@@ -113,9 +113,19 @@ const sidebarContainerVariants = {
 
 
 const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
+  const dispatch = useDispatch();
   const [shrink, setShrink] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const token = localStorage.getItem("userToken");
+
+  useEffect(() => {
+    
+    if(!token){
+      navigate("/login")
+    } 
+
+  },[])
 
   const verifyResponsive = () => {
     if(shrink || (mdScreen && !lgScreen)){
@@ -126,7 +136,16 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
   }
 
   const handleNavigation = (id, link)=> {
+   if(id===8){
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userInfo");
+    dispatch(logoutUser());
+    navigate("/");
+    navigate(0);
+   }
+   else {
     navigate("/social/"+link);
+   }
   }
 
   return (

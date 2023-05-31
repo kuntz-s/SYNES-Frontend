@@ -6,7 +6,7 @@ import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 
-const UniversitiesList = () => {
+const UniversitiesList = ({universities}) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [universityInfo, setUniversityInfo] = useState({
@@ -14,23 +14,7 @@ const UniversitiesList = () => {
     localisation: "",
     logo: "",
   });
-  const [data, setData] = useState([
-    {
-      nom: "Univeristé de Yaoundé 1", // key "name" matches `accessorKey` in ColumnDef down below
-      localisation: "Yaoundé",
-      logo: null, // key "age" matches `accessorKey` in ColumnDef down below
-    },
-    {
-      nom: "Université de Douala",
-      localisation: "Douala",
-      logo: null,
-    },
-    {
-      nom: "Université de Soa",
-      localisation: "Yaoundé",
-      logo: null,
-    },
-  ]);
+  
 
   const columns = [
     {
@@ -104,7 +88,7 @@ const UniversitiesList = () => {
   const handleAdd = () => {
     setIsLoading(true);
     setTimeout(() => {
-      setData([...data, universityInfo]);
+     // setData([...data, universityInfo]);
       setIsLoading(false);
       handleClose();
       toast.success("Nouvelle université ajoutée", {
@@ -149,7 +133,7 @@ const UniversitiesList = () => {
       </div>
       <div className="my-4 ">
         <MaterialTable
-          data={data}
+          data={universities}
           columnsList={columns}
           handleEdit={handleEdit}
           handleDelete={handleDelete}

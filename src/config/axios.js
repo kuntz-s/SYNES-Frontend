@@ -6,6 +6,7 @@ axiosInstance.interceptors.request.use((req) => {
   req.headers.authorization = localStorage.getItem('userToken') 
     ? "Bearer " + localStorage.getItem('userToken')
     : "";
+  req.headers["Content-Type"]="application/json";
   return req;
 });
 

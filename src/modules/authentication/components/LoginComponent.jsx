@@ -1,4 +1,6 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { BsEyeFill, BsEyeSlashFill  } from "react-icons/bs";
+import {GoMail} from "react-icons/go";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
@@ -28,17 +30,22 @@ const imageContainerVariants = {
 const LoginComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { error, loading, userInfo, userToken } = useSelector((state) => state.user);
+  const { error, loading, success } = useSelector(
+    (state) => state.user
+  );
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if(userToken){
-      navigate("/social")
+    
+  const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      navigate("/social");
     } else {
-      if(error ){
+      if (error && !success) {
         toast.error("Utilisateur non trouvé", {
           position: "top-right",
           autoClose: 3000,
@@ -46,11 +53,11 @@ const LoginComponent = () => {
           draggable: true,
           theme: "light",
         });
-      } else if(Object.keys(userInfo).length >0 && !error){
-        navigate("/social")
+      } else if (success && !error) {
+        navigate("/social");
       }
     }
-  },[error, userInfo])
+  }, [error, success]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -71,7 +78,6 @@ const LoginComponent = () => {
       dispatch(
         loginUser({ email: loginInfo.email, password: loginInfo.password })
       );
-     
     }
   };
 
@@ -90,7 +96,6 @@ const LoginComponent = () => {
         />
       </motion.div>
       <div className="md:basis-1/2 flex  flex-col items-center text-center  ">
-        
         <img
           src={logo}
           alt="logo"
@@ -102,7 +107,7 @@ const LoginComponent = () => {
         <div className="mt-2">
           <p className="font-montserrat font-bold text-2xl">Connectez-vous</p>
           <p className="text-gray">
-            Veuillez entrer vos identifiants de connexion 
+            Veuillez entrer vos identifiants de connexion
           </p>
         </div>
         <div className="w-full md:w-[350px] mx-auto mt-4">
@@ -113,13 +118,24 @@ const LoginComponent = () => {
               type="email"
               value={loginInfo.email}
               handleChange={handleChange}
+              icon={<GoMail/>}
+              iconStart
               style={{ borderRadius: 0, backgroundColor: "transparent" }}
             />
             <Input
               title="Mot de passe"
               name="password"
+              type={showPassword ? "text" : "password"}
               value={loginInfo.password}
               handleChange={handleChange}
+              icon={
+                showPassword ? (
+                  <BsEyeSlashFill className="text-primary hover:text-primary/90 hover:cursor-pointer" onClick={() => setShowPassword(false)} />
+                ) : (
+                  <BsEyeFill className="text-primary  hover:text-primary/90 hover:cursor-pointer" onClick={() => setShowPassword(true)}  />
+                )
+              }
+              iconEnd
               style={{ borderRadius: 0, backgroundColor: "transparent" }}
             />
           </div>
