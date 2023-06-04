@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
+import {useDispatch, useSelector} from "react-redux";
+import { postOrgan , getOrgansList} from "../../../../../redux/gestionSyndicatSlice";
 import { ToastContainer, toast } from "react-toastify";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
@@ -13,13 +15,38 @@ const universitéList = [
 ];
 
 const OrgansList = ({organs}) => {
+  const dispatch = useDispatch();
+  const {organLoading , organSuccess , organError} = useSelector((state) => state.gestionSyndicat)
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [organInfo, setOrganInfo] = useState({
     nom: "",
     description: "",
     fondAlloue: 0,
   });
+
+  useEffect(()=>{
+    if (organError && !organSuccess) {
+      
+      handleClose();
+      toast.error(`Erreur lors de l'ajout de l'organe, ${organError}`, {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    } else if (organSuccess && !organError) {
+      handleClose();
+      toast.success("organe ajouté avec succès", {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });   
+      dispatch(getOrgansList());
+    }
+  },[organError, organSuccess])
 
   const handleOpen = () => {
     setOpen(true);
@@ -55,13 +82,13 @@ const OrgansList = ({organs}) => {
       Cell: ({ cell }) => <span>{cell.getValue()} cfa</span>, //optional custom cell render
     },
     {
-      accessorFn: (row) => row.idUniversite, //simple recommended way to define a column
+      accessorFn: (row) => row.universite, //simple recommended way to define a column
       header: "Université affiliée",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
       Cell: ({ cell }) => (
         <span>
-          {cell.getValue()
-            ? universitéList[cell.getValue()]
+          {cell.getValue().nom
+            ? cell.getValue().nom
             : "aucune université"}
         </span>
       ), //optional custom cell render
@@ -76,19 +103,7 @@ const OrgansList = ({organs}) => {
   };
 
   const handleAdd = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-     // setData([...data, {...organInfo, idUniversite:null}]);
-      setIsLoading(false);
-      handleClose();
-      toast.success("Nouvel organe ajouté", {
-        position: "top-center",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
-    }, 3000);
+    dispatch(postOrgan(organInfo))
   };
   const handleEdit = (value, id) => {
     console.log("edit");
@@ -132,7 +147,7 @@ const OrgansList = ({organs}) => {
       <OrgansModal
         open={open}
         addOrgan={handleAdd}
-        isLoading={isLoading}
+        isLoading={organLoading}
         handleClose={handleClose}
         handleChange={handleChange}
         data={organInfo}

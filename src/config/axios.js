@@ -2,9 +2,11 @@ import axios from "axios";
 const axiosInstance = axios;
 
 
+
 axiosInstance.interceptors.request.use((req) => {
-  req.headers.authorization = localStorage.getItem('userToken') 
-    ? "Bearer " + localStorage.getItem('userToken')
+  const token =localStorage.getItem('userToken') ;
+  req.headers.authorization =  token
+    ? "Bearer " + token
     : "";
   req.headers["Content-Type"]="application/json";
   return req;

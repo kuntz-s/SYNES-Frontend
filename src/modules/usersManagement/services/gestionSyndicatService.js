@@ -1,6 +1,11 @@
 import axiosInstance from "../../../../../../DOSSIER MEDICAL/dossiermedical2023/src/config/axios";
 
 const rootLink = import.meta.env.VITE_REACT_APP_PROXY_URL;
+const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
 
 export const getUniversities = () => {
@@ -10,3 +15,32 @@ export const getUniversities = () => {
 export const getOrgans = () => {
     return axiosInstance.get(rootLink+ "/listeOrganes",{data: null});
 }
+
+export const getRoles = () => {
+  return axiosInstance.get(rootLink+ "/listeRoles",{data: null});
+}
+
+export const getPermissions = () => {
+  return axiosInstance.get(rootLink + "/listePermissions",{data:null});
+}
+
+export const getRolePermissions = (id) => {
+  return axiosInstance.get(rootLink + `/listePermissionsRole/${id}`,{data:null});
+}
+
+export const createUniversity = (data)=>{
+    return axiosInstance.post(rootLink+ "/createUniv", data, config);
+}
+
+export const createOrgan = (data)=>{
+  return axiosInstance.post(rootLink+ "/createOrgane", data, config);
+}
+
+export const createRole = (data)=>{
+  return axiosInstance.post(rootLink+ "/createRole", data, config);
+}
+
+export const attributePermissions = (data) => {
+  return axiosInstance.put(rootLink + "/givePremission", data, config);
+}
+

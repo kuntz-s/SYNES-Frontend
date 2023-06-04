@@ -1,5 +1,6 @@
 import React, {  useMemo } from "react";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import {BiEditAlt} from "react-icons/bi";
+import {  FiTrash2 } from "react-icons/fi";
 import { Box } from "@mui/material";
 import MaterialReactTable from "material-react-table";
 import { Tooltip } from "react-tooltip";
@@ -34,10 +35,10 @@ const MaterialTable = ({ data, handleEdit, handleDelete, columnsList, name }) =>
         }}
         renderRowActions={({ row, table }) => (
           <Box sx={{ display: "flex", gap: "1rem" }}>
-            <FiEdit2
+            <BiEditAlt
               data-tooltip-id="edit"
               data-tooltip-content={`Modifier ${name}`}
-              className="hover:cursor-pointer text-xl text-secondary"
+              className="hover:cursor-pointer text-xl text-secondary scale-[1.2]"
               onClick={() => handleEdit(row.original, row.index)}
             />
             <FiTrash2

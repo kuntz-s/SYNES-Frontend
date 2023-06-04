@@ -5,7 +5,7 @@ import UniversitiesList from "./universités/UniversitiesList";
 import OrgansList from "./organes/OrgansList";
 import RolesList from "./roles/RolesList";
 
-const GestionSyndicatComponent = ({universities, organs}) => {
+const GestionSyndicatComponent = ({universities, organs, roles, permissions}) => {
   return (
     <div className="my-6  [&>*]:mb-6">
         <CardsList universités={universities.length} organes={organs.length} membres={50} />
@@ -13,7 +13,7 @@ const GestionSyndicatComponent = ({universities, organs}) => {
         <UniversitiesList universities={universities} />
         
         <OrgansList organs={organs}/>
-        <RolesList/> 
+        <RolesList roles = {roles} organs={organs} permissions={permissions}/> 
     </div>
   );
 };

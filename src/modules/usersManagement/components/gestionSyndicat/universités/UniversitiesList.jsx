@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import { postUniv , getUniversitiesList, getOrgansList} from "../../../../../redux/gestionSyndicatSlice";
 import UniversityModal from "./UniversityModal";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 
 const UniversitiesList = ({universities}) => {
+  const dispatch = useDispatch();
+  const {univLoading , univSuccess , univError} = useSelector((state) => state.gestionSyndicat)
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [universityInfo, setUniversityInfo] = useState({
     nom: "",
     localisation: "",
     logo: "",
   });
+
+  useEffect(()=>{
+    if (univError && !univSuccess) {
+      
+      handleClose();
+      toast.error(`Erreur lors de l'ajout de l'université, ${univError}`, {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    } else if (univSuccess && !univError) {
+      handleClose();
+      toast.success("université ajoutée avec succès", {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });   
+     dispatch(getUniversitiesList());
+      dispatch(getOrgansList());
+    }
+  },[univError, univSuccess])
   
 
   const columns = [
@@ -73,7 +101,6 @@ const UniversitiesList = ({universities}) => {
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
-    console.log("hande change ", e);
     if (name === "logo" && value) {
       const image = e.target.files[0];
       setUniversityInfo({
@@ -86,19 +113,7 @@ const UniversitiesList = ({universities}) => {
   };
 
   const handleAdd = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-     // setData([...data, universityInfo]);
-      setIsLoading(false);
-      handleClose();
-      toast.success("Nouvelle université ajoutée", {
-        position: "top-center",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
-    }, 3000);
+    dispatch(postUniv({...universityInfo, logo:null}))
   };
 
   const handleEdit = (value, id) => {
@@ -144,7 +159,7 @@ const UniversitiesList = ({universities}) => {
       <UniversityModal
         open={open}
         addUniversity={handleAdd}
-        isLoading={isLoading}
+        isLoading={univLoading}
         handleClose={handleClose}
         handleChange={handleChange}
         data={universityInfo}

@@ -1,43 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter, BsEye } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  postRole,
+  getRolesList,
+  updatePermissions,
+} from "../../../../../redux/gestionSyndicatSlice";
 import { ToastContainer, toast } from "react-toastify";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 import RolesModal from "./RolesModal";
+import PermissionModal from "./PermissionModal";
+import { getRolePermissions } from "../../../services/gestionSyndicatService";
 
-const organsList = [
-  {
-    id:1,
-    nom: "Congrès",
-    description: "haute instance du synes",
-  },
-  {
-    id:2,
-    nom: "Bureau exécutif national",
-    description: "description BEN",
-  },
-  {
-    id:3,
-    nom: "Section ngoa ekelle",
-    description: "description section ngoa ekelle",
-  },
-];
-
-const RolesList = () => {
+const RolesList = ({ roles, organs, permissions }) => {
+  const dispatch = useDispatch();
+  const {
+    roleLoading,
+    roleSuccess,
+    roleError,
+    updatePermLoading,
+    updatePermError,
+    updatePermSuccess,
+  } = useSelector((state) => state.gestionSyndicat);
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [openPermissions, setOpenPermissions] = useState(false);
+  const [modifyPermissions, setModifyPermissions] = useState(false);
   const [roleInfo, setRoleInfo] = useState({
     nom: "",
     description: "",
     idOrgane: "",
-    organe: "",
+    organe: null,
   });
-  
+
+  const [selectedRole, setSelectedRole] = useState({
+    id: null,
+    nom: "",
+    description: "",
+    permissions: [],
+  });
+
+  useEffect(() => {
+    if (
+      (roleError && !roleSuccess) ||
+      (updatePermError && !updatePermSuccess)
+    ) {
+      handleClosePermissions()
+      handleClose();
+      toast.error(`
+      "Erreur :", ${roleError ? roleError : updatePermError}`, {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    } else if (
+      (roleSuccess && !roleError) ||
+      (!updatePermError && updatePermSuccess)
+    ) {
+      handleClosePermissions();
+      handleClose();
+      toast.success(
+        "Action effectuée avec succès",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        }
+      );
+      dispatch(getRolesList());
+    }
+  }, [roleError, roleSuccess, updatePermError, updatePermSuccess]);
 
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setRoleInfo({
       nom: "",
@@ -48,20 +90,26 @@ const RolesList = () => {
     setOpen(false);
   };
 
-  const [data, setData] = useState([
-    {
-      id: 1,
-      nom: "Sécrétaire congrès", // key "name" matches `accessorKey` in ColumnDef down below
-      description: "Sécrétaire en charge de faire ceci ou cela",
-      organe: "Congrès", // key "age" matches `accessorKey` in ColumnDef down below
-    },
-    {
-      id: 2,
-      nom: "Sécrétaire général bureau executif national",
-      description: "sécrétaire en tète du bureau executif national",
-      organe: "Bureau exécutif national",
-    },
-  ]);
+  const handleOpenPermissions = async (cell) => {
+    const data = cell.row.original;
+    //  console.log(" and cell is ", cell);
+    const permissions = await getRolePermissions(data.id);
+    if (permissions.status === 200) {
+      setSelectedRole({ ...data, permissions: permissions.data });
+      setOpenPermissions(true);
+    }
+  };
+
+  const handleClosePermissions = () => {
+    setOpenPermissions(false);
+    setSelectedRole({
+      id: null,
+      nom: "",
+      description: "",
+      permissions: [],
+    });
+    setModifyPermissions(false);
+  };
 
   const columns = [
     {
@@ -81,7 +129,7 @@ const RolesList = () => {
       accessorFn: (row) => row.organe, //simple recommended way to define a column
       header: "Organe associé",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
-      Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
+      Cell: ({ cell }) => <span>{cell.getValue().nom}</span>, //optional custom cell render
     },
 
     {
@@ -89,7 +137,10 @@ const RolesList = () => {
       header: "Permissions",
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
       Cell: ({ cell }) => (
-        <p className="text-secondary hover:underline hover:cursor-pointer flex items-center">
+        <p
+          className="text-secondary hover:underline hover:cursor-pointer flex items-center"
+          onClick={() => handleOpenPermissions(cell)}
+        >
           <BsEye className="mr-1 " /> <span>Visualiser</span>
         </p>
       ), //optional custom cell render
@@ -104,26 +155,52 @@ const RolesList = () => {
   };
 
   const handleAdd = () => {
-    setIsLoading(true);
-    setRoleInfo({...roleInfo, idOrgane:organsList.find((elt) =>elt.nom=== roleInfo.organe).id})
-    setTimeout(() => {
-      setData([...data, {...roleInfo}]);
-      setIsLoading(false);
-      handleClose();
-      toast.success("Nouveau role ajouté", {
-        position: "top-center",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
-    }, 3000);
+    const newRole = {
+      ...roleInfo,
+      idOrgane: organs.find((elt) => elt.nom === roleInfo.organe).id,
+    };
+    setRoleInfo(newRole);
+    dispatch(
+      postRole({
+        nom: newRole.nom,
+        description: newRole.description,
+        idOrgane: newRole.idOrgane,
+      })
+    );
   };
   const handleEdit = (value, id) => {
     console.log("edit");
   };
   const handleDelete = (value, id) => {
     console.log("delete");
+  };
+
+  const handleModifyPermissions = (permissions) => {
+    const newPermissions = [];
+    for (let elt of permissions) {
+      if (elt.checked === true) {
+        newPermissions.push(elt.id);
+      }
+    }
+    dispatch(
+      updatePermissions({
+        idRole: selectedRole.id,
+        newPermissions: newPermissions,
+      })
+    );
+    setTimeout(() => {
+      handleClosePermissions();
+      toast.success(
+        "Action effectuée avec succès",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        }
+      );
+    },1000)
   };
 
   return (
@@ -151,7 +228,7 @@ const RolesList = () => {
       </div>
       <div className="my-4">
         <MaterialTable
-          data={data}
+          data={roles}
           columnsList={columns}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
@@ -161,11 +238,21 @@ const RolesList = () => {
       <RolesModal
         open={open}
         addRole={handleAdd}
-        isLoading={isLoading}
+        isLoading={roleLoading}
         handleClose={handleClose}
         handleChange={handleChange}
         data={roleInfo}
-        organsList ={organsList}
+        organsList={organs}
+      />
+      <PermissionModal
+        open={openPermissions}
+        handleClose={handleClosePermissions}
+        selectedRole={selectedRole}
+        permissions={permissions}
+        modify={modifyPermissions}
+        isLoading={updatePermLoading}
+        handleModify={handleModifyPermissions}
+        openModification={() => setModifyPermissions(true)}
       />
       <ToastContainer />
     </div>

@@ -17,7 +17,7 @@ const OrgansModal = ({
 }) => {
 
     const handleAdd = () => {
-        if(data.nom && data.description && data.fondAlloue && data.fondAlloue > 0){
+        if(data.nom && data.description &&  data.fondAlloue >= 0){
           addOrgan()
         } else {
           toast.error("Veuillez renseigner tous les champs", {
