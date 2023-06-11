@@ -6,6 +6,7 @@ import LoginPage from "../modules/authentication/pages/LoginPage";
 import SidebarMenu from "../layout/sidebar/socialSidebar/SidebarMenu";
 import DashboardSidebarMenu from "../layout/sidebar/dashboardSidebar/DashboardSidebarMenu";
 import GestionSyndicat from "../modules/usersManagement/pages/GestionSyndicat";
+import GestionMembre from "../modules/usersManagement/pages/GestionMembre";
 
 export const router = createBrowserRouter(
     [
@@ -30,7 +31,12 @@ export const router = createBrowserRouter(
                   {
                     path:"/social/dashboard/gestion-syndicat",
                     element:<GestionSyndicat/>
-                  },{
+                  },
+                  {
+                    path:"/social/dashboard/gestion-membres",
+                    element:<GestionMembre/>
+                  },
+                  {
                     path:"/social/dashboard/*",
                     element:<div>autre gestion</div>
                   }

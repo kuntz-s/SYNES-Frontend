@@ -6,7 +6,7 @@ import MaterialReactTable from "material-react-table";
 import { Tooltip } from "react-tooltip";
 import "../../assets/css/Mui.css";
 
-const MaterialTable = ({ data, handleEdit, handleDelete, columnsList, name }) => {
+const MaterialTable = ({ data, handleEdit, handleDelete, columnsList, name, hideEdit, hideDelete }) => {
   const columns = useMemo(
     () =>columnsList,
     []
@@ -38,13 +38,13 @@ const MaterialTable = ({ data, handleEdit, handleDelete, columnsList, name }) =>
             <BiEditAlt
               data-tooltip-id="edit"
               data-tooltip-content={`Modifier ${name}`}
-              className="hover:cursor-pointer text-xl text-secondary scale-[1.2]"
+              className={`hover:cursor-pointer text-xl text-secondary scale-[1.2]  border-none outline-none  ${hideEdit && "hidden"}`}
               onClick={() => handleEdit(row.original, row.index)}
             />
             <FiTrash2
               data-tooltip-id="delete"
               data-tooltip-content={`Supprimer ${name}`}
-              className="hover:cursor-pointer text-xl text-red-400"
+              className={`hover:cursor-pointer text-xl text-red-400 border-none outline-none  ${hideDelete && "hidden"}`}
               onClick={() => handleDelete(row.original, row.index)}
             />
           </Box>

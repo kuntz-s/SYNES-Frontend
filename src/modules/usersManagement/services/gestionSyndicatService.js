@@ -32,15 +32,35 @@ export const createUniversity = (data)=>{
     return axiosInstance.post(rootLink+ "/createUniv", data, config);
 }
 
+
 export const createOrgan = (data)=>{
   return axiosInstance.post(rootLink+ "/createOrgane", data, config);
 }
 
 export const createRole = (data)=>{
   return axiosInstance.post(rootLink+ "/createRole", data, config);
+
 }
 
 export const attributePermissions = (data) => {
   return axiosInstance.put(rootLink + "/givePremission", data, config);
 }
+
+
+export const modifyUniversity = (data)=>{
+  return axiosInstance.put(rootLink+ "/updateUniversite", data, config);
+}
+
+export const modifyOrgan = (data)=>{
+  return axiosInstance.put(rootLink+ "/updateOrgane", data, config);
+}
+
+export const modifyRole = (data)=>{
+  return axiosInstance.put(rootLink+ "/updateRole", data, config);
+}
+
+export const deleteRole = (id)=>{
+  return axiosInstance.delete(rootLink+ `/deleteRole/${id}`,{data:null}, config);
+}
+
 

@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter, BsEye } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import {
   postRole,
   getRolesList,
   updatePermissions,
+  updateRole,
 } from "../../../../../redux/gestionSyndicatSlice";
-import { ToastContainer, toast } from "react-toastify";
+import axiosInstance from "../../../../../config/axios";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
+import ErrorModal from "../../../../../components/baseComponents/ErrorModal";
 import RolesModal from "./RolesModal";
 import PermissionModal from "./PermissionModal";
-import { getRolePermissions } from "../../../services/gestionSyndicatService";
+import DeleteModal from "../../../../../components/baseComponents/DeleteModal";
+import { getRolePermissions, deleteRole } from "../../../services/gestionSyndicatService";
+import { resetRolesAndPermissions } from "../../../../../redux/gestionSyndicatSlice";
 
 const RolesList = ({ roles, organs, permissions }) => {
   const dispatch = useDispatch();
@@ -26,6 +31,8 @@ const RolesList = ({ roles, organs, permissions }) => {
   } = useSelector((state) => state.gestionSyndicat);
   const [open, setOpen] = useState(false);
   const [openPermissions, setOpenPermissions] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [modifyPermissions, setModifyPermissions] = useState(false);
   const [roleInfo, setRoleInfo] = useState({
     nom: "",
@@ -33,6 +40,19 @@ const RolesList = ({ roles, organs, permissions }) => {
     idOrgane: "",
     organe: null,
   });
+
+  const [modifyInfo, setModifyInfo] = useState({
+    modifyStatus: false,
+    modifyValue: {
+      id: "",
+      nom: "",
+      description: "",
+      idOrgane: "",
+      organe: null,
+    },
+  });
+
+  const [deleteId, setDeleteId] = useState(null)
 
   const [selectedRole, setSelectedRole] = useState({
     id: null,
@@ -42,28 +62,16 @@ const RolesList = ({ roles, organs, permissions }) => {
   });
 
   useEffect(() => {
+    console.log("update perm sucess , ", updatePermSuccess);
     if (
       (roleError && !roleSuccess) ||
       (updatePermError && !updatePermSuccess)
     ) {
-      handleClosePermissions()
-      handleClose();
-      toast.error(`
-      "Erreur :", ${roleError ? roleError : updatePermError}`, {
-        position: "top-right",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
-    } else if (
-      (roleSuccess && !roleError) ||
-      (!updatePermError && updatePermSuccess)
-    ) {
       handleClosePermissions();
       handleClose();
-      toast.success(
-        "Action effectuée avec succès",
+      toast.error(
+        `
+      "Erreur :", ${roleError ? roleError : updatePermError}`,
         {
           position: "top-right",
           autoClose: 3000,
@@ -72,7 +80,34 @@ const RolesList = ({ roles, organs, permissions }) => {
           theme: "light",
         }
       );
+      dispatch(resetRolesAndPermissions());
+    } else if (
+      (roleSuccess && !roleError) ||
+      (!updatePermError && updatePermSuccess)
+    ) {
+      console.log(
+        "role error",
+        roleError,
+        "role success",
+        roleSuccess,
+        " updatePer merror",
+        updatePermError,
+        "updatePerm succsess",
+        updatePermSuccess
+      );
+      handleClosePermissions();
+      handleClose();
+      setTimeout(() => {
+        toast.success("Action effectuée avec succès", {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      }, 200);
       dispatch(getRolesList());
+      dispatch(resetRolesAndPermissions());
     }
   }, [roleError, roleSuccess, updatePermError, updatePermSuccess]);
 
@@ -86,6 +121,13 @@ const RolesList = ({ roles, organs, permissions }) => {
       description: "",
       idOrgane: "",
       organe: "",
+    });
+    setModifyInfo({
+      id: "",
+      nom: "",
+      description: "",
+      idOrgane: "",
+      organe: null,
     });
     setOpen(false);
   };
@@ -168,11 +210,55 @@ const RolesList = ({ roles, organs, permissions }) => {
       })
     );
   };
+
+  const handleRemove = async () => {
+    const res = await deleteRole(deleteId);
+    setOpenDelete(false);
+    if (res.status === 200) {
+      setTimeout(() => {
+        dispatch(getRolesList())
+        toast.success("role supprimé avec succès");
+      },200)
+    } else {
+      setTimeout(() => {
+        toast.error("une erreur est survenue lors de la suppression du role")
+      },200)
+    }
+  }
+
+
+
+
   const handleEdit = (value, id) => {
-    console.log("edit");
+    if (value.nom.startsWith("Membre Section")) {
+      setOpenError(true);
+    } else {
+      setModifyInfo({
+        ...modifyInfo,
+        modifyStatus: true,
+        modifyValue: value,
+      });
+      setRoleInfo({ ...value, organe: value.organe.nom });
+      setOpen(true);
+    }
   };
+
   const handleDelete = (value, id) => {
-    console.log("delete");
+    if (value.nom.startsWith("Membre Section")) {
+      setOpenError(true);
+    } else {
+      setDeleteId(value.id);
+      setOpenDelete(true);
+    }
+  };
+
+  const handleModifyRole = () => {
+    const newRole = {
+      ...roleInfo,
+      organe: organs.find((elt) => elt.nom === roleInfo.organe),
+    };
+    dispatch(updateRole(newRole));
+    // dispatch(updateRole(newRole))
   };
 
   const handleModifyPermissions = (permissions) => {
@@ -188,19 +274,6 @@ const RolesList = ({ roles, organs, permissions }) => {
         newPermissions: newPermissions,
       })
     );
-    setTimeout(() => {
-      handleClosePermissions();
-      toast.success(
-        "Action effectuée avec succès",
-        {
-          position: "top-right",
-          autoClose: 3000,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-        }
-      );
-    },1000)
   };
 
   return (
@@ -242,7 +315,9 @@ const RolesList = ({ roles, organs, permissions }) => {
         handleClose={handleClose}
         handleChange={handleChange}
         data={roleInfo}
+        modifyRole={handleModifyRole}
         organsList={organs}
+        modify={modifyInfo}
       />
       <PermissionModal
         open={openPermissions}
@@ -254,6 +329,14 @@ const RolesList = ({ roles, organs, permissions }) => {
         handleModify={handleModifyPermissions}
         openModification={() => setModifyPermissions(true)}
       />
+      <ErrorModal open={openError} handleClose={() => setOpenError(false)} />
+      <DeleteModal
+        open={openDelete}
+        handleClose={() => {setOpenDelete(false); setDeleteId(null)}}
+        title="Supprimer une université"
+        description="la suppression de ce role impactera tous les membres possédant ce role. Voulez-vous tout de même supprimer ?"
+        handleDelete = {handleRemove}
+     />
       <ToastContainer />
     </div>
   );

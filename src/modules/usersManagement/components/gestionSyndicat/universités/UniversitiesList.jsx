@@ -1,48 +1,80 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import { postUniv , getUniversitiesList, getOrgansList} from "../../../../../redux/gestionSyndicatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  postUniv,
+  getUniversitiesList,
+  getOrgansList,
+  updateUniv,
+  getRolesList,
+} from "../../../../../redux/gestionSyndicatSlice";
+import { resetUniversities } from "../../../../../redux/gestionSyndicatSlice";
 import UniversityModal from "./UniversityModal";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 
-const UniversitiesList = ({universities}) => {
+const UniversitiesList = ({ universities }) => {
   const dispatch = useDispatch();
-  const {univLoading , univSuccess , univError} = useSelector((state) => state.gestionSyndicat)
+  const { univLoading, univSuccess, univError } = useSelector(
+    (state) => state.gestionSyndicat
+  );
   const [open, setOpen] = useState(false);
   const [universityInfo, setUniversityInfo] = useState({
     nom: "",
     localisation: "",
     logo: "",
   });
+  const [modifyInfo, setModifyInfo] = useState({
+    modifyStatus: false,
+    modifyId: null,
+    modifyValue: {
+      id: "",
+      nom: "",
+      localisation: "",
+      logo: "",
+    },
+  });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (univError && !univSuccess) {
-      
       handleClose();
-      toast.error(`Erreur lors de l'ajout de l'université, ${univError}`, {
-        position: "top-right",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
+      toast.error(
+        `Erreur lors de ${
+          modifyInfo.modifyStatus ? "la modification" : "l'ajout"
+        } de l'université, ${univError}`,
+        {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        }
+      );
+      dispatch(resetUniversities());
     } else if (univSuccess && !univError) {
       handleClose();
-      toast.success("université ajoutée avec succès", {
-        position: "top-right",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });   
-     dispatch(getUniversitiesList());
+      setTimeout(() => {
+        toast.success(
+          `université ${
+            modifyInfo.modifyStatus ? "modifiée" : "ajoutée"
+          } avec succès `,
+          {
+            position: "top-right",
+            autoClose: 3000,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "light",
+          }
+        );
+      }, 200);
+      dispatch(getUniversitiesList());
       dispatch(getOrgansList());
+      dispatch(getRolesList())
+      dispatch(resetUniversities());
     }
-  },[univError, univSuccess])
-  
+  }, [univError, univSuccess]);
 
   const columns = [
     {
@@ -52,11 +84,13 @@ const UniversitiesList = ({universities}) => {
       Cell: ({ cell }) => (
         <div className="w-full">
           {cell.getValue() ? (
-           <img src={ cell.getValue()} alt="logo uni" className=" mx-auto rounded-full object-cover w-10 h-10"  />
+            <img
+              src={cell.getValue()}
+              alt="logo uni"
+              className=" mx-auto rounded-full object-cover w-10 h-10"
+            />
           ) : (
-            <span >
-              Aucune photo
-            </span>
+            <span>Aucune photo</span>
           )}
         </div>
       ), //optional custom cell render
@@ -66,24 +100,15 @@ const UniversitiesList = ({universities}) => {
       accessorFn: (row) => row.nom, //simple recommended way to define a column
       header: "Nom",
       muiTableHeadCellProps: { sx: { color: "#475569" } }, //optional custom props
-      Cell: ({ cell }) => (
-        <span >
-          {cell.getValue()}
-        </span>
-      ), //optional custom cell render
+      Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
       // size:258
     },
     {
       accessorFn: (row) => row.localisation, //simple recommended way to define a column
       header: "Localisation",
       muiTableHeadCellProps: { sx: { color: "#475569" } }, //optional custom props
-      Cell: ({ cell }) => (
-        <span >
-          {cell.getValue()}
-        </span>
-      ), //optional custom cell render
+      Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
     },
-    
   ];
 
   const handleOpen = () => {
@@ -94,6 +119,16 @@ const UniversitiesList = ({universities}) => {
       nom: "",
       localisation: "",
       logo: "",
+    });
+    setModifyInfo({
+      modifyStatus: false,
+      modifyId: null,
+      modifyValue: {
+        id: "",
+        nom: "",
+        localisation: "",
+        logo: "",
+      },
     });
     setOpen(false);
   };
@@ -113,11 +148,22 @@ const UniversitiesList = ({universities}) => {
   };
 
   const handleAdd = () => {
-    dispatch(postUniv({...universityInfo, logo:null}))
+    dispatch(postUniv({ ...universityInfo, logo: null }));
+  };
+
+  const handleModify = () => {
+    dispatch(updateUniv({ ...universityInfo, logo: null }));
   };
 
   const handleEdit = (value, id) => {
-    console.log("edit");
+    setModifyInfo({
+      ...modifyInfo,
+      modifyStatus: true,
+      modifyId: value.id,
+      modifyValue: value,
+    });
+    setUniversityInfo(value);
+    setOpen(true);
   };
   const handleDelete = (value, id) => {
     console.log("delete");
@@ -159,12 +205,14 @@ const UniversitiesList = ({universities}) => {
       <UniversityModal
         open={open}
         addUniversity={handleAdd}
+        modifyUniversity={handleModify}
         isLoading={univLoading}
         handleClose={handleClose}
         handleChange={handleChange}
         data={universityInfo}
+        modify={modifyInfo}
       />
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 };

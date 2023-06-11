@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
-import {useDispatch, useSelector} from "react-redux";
-import { postOrgan , getOrgansList} from "../../../../../redux/gestionSyndicatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  postOrgan,
+  getOrgansList,
+  updateOrgan
+} from "../../../../../redux/gestionSyndicatSlice";
 import { ToastContainer, toast } from "react-toastify";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
+import { resetOrgans } from "../../../../../redux/gestionSyndicatSlice";
+import ErrorModal from "../../../../../components/baseComponents/ErrorModal";
 import OrgansModal from "./OrgansModal";
 
 const universitéList = [
@@ -14,39 +20,59 @@ const universitéList = [
   "Université de douala",
 ];
 
-const OrgansList = ({organs}) => {
+const OrgansList = ({ organs }) => {
   const dispatch = useDispatch();
-  const {organLoading , organSuccess , organError} = useSelector((state) => state.gestionSyndicat)
+  const { organLoading, organSuccess, organError } = useSelector(
+    (state) => state.gestionSyndicat
+  );
   const [open, setOpen] = useState(false);
+  const [openError,setOpenError] = useState(false)
   const [organInfo, setOrganInfo] = useState({
     nom: "",
     description: "",
     fondAlloue: 0,
   });
+  const [modifyInfo, setModifyInfo] = useState({
+    modifyStatus: false,
+    modifyValue: {
+      id: "",
+      nom: "",
+      description: "",
+      fondAlloue: 0,
+      universite:""
+    },
+  });
 
-  useEffect(()=>{
+  useEffect(() => {
     if (organError && !organSuccess) {
-      
       handleClose();
-      toast.error(`Erreur lors de l'ajout de l'organe, ${organError}`, {
+      toast.error( `Erreur lors de ${
+        modifyInfo.modifyStatus ? "la modification" : "l'ajout"
+      } de l'organe, ${organError}`, {
         position: "top-right",
         autoClose: 3000,
         pauseOnHover: true,
         draggable: true,
         theme: "light",
       });
+      dispatch(resetOrgans());
     } else if (organSuccess && !organError) {
       handleClose();
-      toast.success("organe ajouté avec succès", {
-        position: "top-right",
-        autoClose: 3000,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });   
+      setTimeout(() =>{
+        toast.success(`Organe ${
+          modifyInfo.modifyStatus ? "modifié" : "ajouté"
+        } avec succès `, {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      },200)
       dispatch(getOrgansList());
+      dispatch(resetOrgans());
     }
-  },[organError, organSuccess])
+  }, [organError, organSuccess]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -57,9 +83,17 @@ const OrgansList = ({organs}) => {
       description: "",
       fondAlloue: 0,
     });
+    setModifyInfo({
+      modifyStatus: false,
+      modifyValue: {
+        id: "",
+        nom: "",
+      description: "",
+      fondAlloue: 0,
+      },
+    })
     setOpen(false);
   };
-
 
   const columns = [
     {
@@ -87,9 +121,7 @@ const OrgansList = ({organs}) => {
       muiTableHeadCellProps: { sx: { color: "#475569", fontSize: 16 } }, //optional custom props
       Cell: ({ cell }) => (
         <span>
-          {cell.getValue().nom
-            ? cell.getValue().nom
-            : "aucune université"}
+          {cell.getValue().nom ? cell.getValue().nom : "aucune université"}
         </span>
       ), //optional custom cell render
     },
@@ -103,10 +135,26 @@ const OrgansList = ({organs}) => {
   };
 
   const handleAdd = () => {
-    dispatch(postOrgan(organInfo))
+    dispatch(postOrgan(organInfo));
   };
+
+  const handleModify = () => {
+    dispatch(updateOrgan(organInfo))
+  };
+
+
   const handleEdit = (value, id) => {
-    console.log("edit");
+    if(value.nom.startsWith("Section")){
+      setOpenError(true)
+    } else {
+      setModifyInfo({
+        ...modifyInfo,
+        modifyStatus: true,
+        modifyValue: value,
+      });
+      setOrganInfo(value);
+      setOpen(true);
+    }
   };
   const handleDelete = (value, id) => {
     console.log("delete");
@@ -147,12 +195,15 @@ const OrgansList = ({organs}) => {
       <OrgansModal
         open={open}
         addOrgan={handleAdd}
+        modifyOrgan={handleModify}
         isLoading={organLoading}
         handleClose={handleClose}
         handleChange={handleChange}
         data={organInfo}
+        modify={modifyInfo}
       />
-      <ToastContainer/>
+      <ToastContainer />
+      <ErrorModal open={openError} handleClose={() => setOpenError(false)} />
     </div>
   );
 };
