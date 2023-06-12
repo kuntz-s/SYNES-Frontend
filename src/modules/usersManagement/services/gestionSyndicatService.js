@@ -28,6 +28,10 @@ export const getRolePermissions = (id) => {
   return axiosInstance.get(rootLink + `/listePermissionsRole/${id}`,{data:null});
 }
 
+export const getMembres = () => {
+  return axiosInstance.get(rootLink + "/listeMembres",{data:null});
+}
+
 export const createUniversity = (data)=>{
     return axiosInstance.post(rootLink+ "/createUniv", data, config);
 }
@@ -57,6 +61,14 @@ export const modifyOrgan = (data)=>{
 
 export const modifyRole = (data)=>{
   return axiosInstance.put(rootLink+ "/updateRole", data, config);
+}
+
+export const deleteUniversity = (id)=>{
+  return axiosInstance.delete(rootLink+ `/deleteUniversity/${id}`,{data:null}, config);
+}
+
+export const deleteOrgan = (id)=>{
+  return axiosInstance.delete(rootLink+ `/deleteOrgane/${id}`,{data:null}, config);
 }
 
 export const deleteRole = (id)=>{

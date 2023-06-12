@@ -10,7 +10,9 @@ import {
   getRolesList,
 } from "../../../../../redux/gestionSyndicatSlice";
 import { resetUniversities } from "../../../../../redux/gestionSyndicatSlice";
+import { deleteUniversity } from "../../../services/gestionSyndicatService";
 import UniversityModal from "./UniversityModal";
+import DeleteModal from "../../../../../components/baseComponents/DeleteModal";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
@@ -21,6 +23,7 @@ const UniversitiesList = ({ universities }) => {
     (state) => state.gestionSyndicat
   );
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [universityInfo, setUniversityInfo] = useState({
     nom: "",
     localisation: "",
@@ -36,6 +39,8 @@ const UniversitiesList = ({ universities }) => {
       logo: "",
     },
   });
+
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     if (univError && !univSuccess) {
@@ -71,7 +76,7 @@ const UniversitiesList = ({ universities }) => {
       }, 200);
       dispatch(getUniversitiesList());
       dispatch(getOrgansList());
-      dispatch(getRolesList())
+      dispatch(getRolesList());
       dispatch(resetUniversities());
     }
   }, [univError, univSuccess]);
@@ -155,6 +160,27 @@ const UniversitiesList = ({ universities }) => {
     dispatch(updateUniv({ ...universityInfo, logo: null }));
   };
 
+  const handleRemove = async () => {
+ 
+    const res = await deleteUniversity(deleteId);
+    console.log(res)
+    setOpenDelete(false);
+    if (res.status === 200) {
+      setTimeout(() => {
+        dispatch(getRolesList());
+        dispatch(getOrgansList());
+        dispatch(getUniversitiesList());
+        toast.success("université supprimée avec succès");
+      }, 200);
+    } else {
+      setTimeout(() => {
+        toast.error(
+          "une erreur est survenue lors de la suppression de l'université"
+        );
+      }, 200);
+    }
+  };
+
   const handleEdit = (value, id) => {
     setModifyInfo({
       ...modifyInfo,
@@ -166,7 +192,8 @@ const UniversitiesList = ({ universities }) => {
     setOpen(true);
   };
   const handleDelete = (value, id) => {
-    console.log("delete");
+    setDeleteId(value.id);
+    setOpenDelete(true);
   };
 
   return (
@@ -199,7 +226,6 @@ const UniversitiesList = ({ universities }) => {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           name="université"
-          handleOpen={handleOpen}
         />
       </div>
       <UniversityModal
@@ -211,6 +237,16 @@ const UniversitiesList = ({ universities }) => {
         handleChange={handleChange}
         data={universityInfo}
         modify={modifyInfo}
+      />
+      <DeleteModal
+        open={openDelete}
+        handleClose={() => {
+          setOpenDelete(false);
+          setDeleteId(null);
+        }}
+        title="Supprimer une université"
+        description="la suppression de cette université entrainera la supression des roles, membres et organes qui lui sont associé. Voulez-vous tout de même supprimer ?"
+        handleDelete={handleRemove}
       />
       <ToastContainer />
     </div>

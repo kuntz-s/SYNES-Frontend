@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { FaChalkboardTeacher, FaArrowRight } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";

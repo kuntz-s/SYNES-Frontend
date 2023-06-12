@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   postOrgan,
   getOrgansList,
+  getRolesList,
   updateOrgan
 } from "../../../../../redux/gestionSyndicatSlice";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,13 +13,9 @@ import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
 import { resetOrgans } from "../../../../../redux/gestionSyndicatSlice";
 import ErrorModal from "../../../../../components/baseComponents/ErrorModal";
+import DeleteModal from "../../../../../components/baseComponents/DeleteModal";
+import { deleteOrgan } from "../../../services/gestionSyndicatService";
 import OrgansModal from "./OrgansModal";
-
-const universitéList = [
-  "Université de yaoundé 1",
-  "Université de yaoundé 2",
-  "Université de douala",
-];
 
 const OrgansList = ({ organs }) => {
   const dispatch = useDispatch();
@@ -27,6 +24,7 @@ const OrgansList = ({ organs }) => {
   );
   const [open, setOpen] = useState(false);
   const [openError,setOpenError] = useState(false)
+  const [openDelete,setOpenDelete] = useState(false)
   const [organInfo, setOrganInfo] = useState({
     nom: "",
     description: "",
@@ -42,6 +40,8 @@ const OrgansList = ({ organs }) => {
       universite:""
     },
   });
+
+  const [deleteId, setDeleteId] = useState(null)
 
   useEffect(() => {
     if (organError && !organSuccess) {
@@ -142,6 +142,22 @@ const OrgansList = ({ organs }) => {
     dispatch(updateOrgan(organInfo))
   };
 
+  const handleRemove = async () => {
+    const res = await deleteOrgan(deleteId);
+    setOpenDelete(false);
+    if (res.status === 200) {
+      setTimeout(() => {
+        dispatch(getRolesList())
+        dispatch(getOrgansList())
+        toast.success("organe supprimé avec succès");
+      },200)
+    } else {
+      setTimeout(() => {
+        toast.error("une erreur est survenue lors de la suppression de l'organe")
+      },200)
+    }
+  }
+
 
   const handleEdit = (value, id) => {
     if(value.nom.startsWith("Section")){
@@ -157,7 +173,12 @@ const OrgansList = ({ organs }) => {
     }
   };
   const handleDelete = (value, id) => {
-    console.log("delete");
+    if(value.nom.startsWith("Section")){
+      setOpenError(true)
+    } else {
+      setDeleteId(value.id);
+      setOpenDelete(true);
+    }
   };
 
   return (
@@ -203,6 +224,13 @@ const OrgansList = ({ organs }) => {
         modify={modifyInfo}
       />
       <ToastContainer />
+      <DeleteModal
+        open={openDelete}
+        handleClose={() => {setOpenDelete(false); setDeleteId(null)}}
+        title="Supprimer un organe"
+        description="la suppression de cet organe entrainera la supression des roles qui lui sont associé. Voulez-vous tout de même supprimer ?"
+        handleDelete = {handleRemove}
+     />
       <ErrorModal open={openError} handleClose={() => setOpenError(false)} />
     </div>
   );

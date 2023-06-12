@@ -8,7 +8,6 @@ import {
   updatePermissions,
   updateRole,
 } from "../../../../../redux/gestionSyndicatSlice";
-import axiosInstance from "../../../../../config/axios";
 import StatTitle from "../../../../../components/baseComponents/StatTitle";
 import Button from "../../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../../components/baseComponents/MaterialTable";
@@ -333,7 +332,7 @@ const RolesList = ({ roles, organs, permissions }) => {
       <DeleteModal
         open={openDelete}
         handleClose={() => {setOpenDelete(false); setDeleteId(null)}}
-        title="Supprimer une université"
+        title="Supprimer un role"
         description="la suppression de ce role impactera tous les membres possédant ce role. Voulez-vous tout de même supprimer ?"
         handleDelete = {handleRemove}
      />
