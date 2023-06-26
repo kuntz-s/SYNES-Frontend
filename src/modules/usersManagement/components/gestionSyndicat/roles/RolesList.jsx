@@ -61,7 +61,6 @@ const RolesList = ({ roles, organs, permissions }) => {
   });
 
   useEffect(() => {
-    console.log("update perm sucess , ", updatePermSuccess);
     if (
       (roleError && !roleSuccess) ||
       (updatePermError && !updatePermSuccess)
@@ -84,16 +83,6 @@ const RolesList = ({ roles, organs, permissions }) => {
       (roleSuccess && !roleError) ||
       (!updatePermError && updatePermSuccess)
     ) {
-      console.log(
-        "role error",
-        roleError,
-        "role success",
-        roleSuccess,
-        " updatePer merror",
-        updatePermError,
-        "updatePerm succsess",
-        updatePermSuccess
-      );
       handleClosePermissions();
       handleClose();
       setTimeout(() => {

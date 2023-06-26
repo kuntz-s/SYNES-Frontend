@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import Helmet from "../../../components/Helmet/Helmet";
 import { getMembersList } from "../../../redux/gestionMembreSlice";
 import MembersListTable from "../components/gestionMembres/MembersListTable";
+import { getUniversitiesList, getRolesList } from "../../../redux/gestionSyndicatSlice";
 
 const acceptedPermissions = [
   "Attributtion role systeme",
@@ -14,10 +15,10 @@ const acceptedPermissions = [
 const GestionMembre = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {members} = useSelector(state => state.gestionMembre);
-  const [permCirconscription, setPermCirconscription] = useState("");
-  const [restrictMembers, setRestrictMembers] = useState(false);
-  
+  const { members } = useSelector((state) => state.gestionMembre);
+  const { universities, roles } = useSelector((state) => state.gestionSyndicat);
+  const [restrictMembers, setRestrictMembers] = useState(true);
+
   const user = JSON.parse(localStorage.getItem("userInfo"));
   useEffect(() => {
     if (!user) {
@@ -27,13 +28,16 @@ const GestionMembre = () => {
       const systemRole = list.find((elt) => elt === acceptedPermissions[0]);
       const organRole = list.find((elt) => elt === acceptedPermissions[1]);
       if (!systemRole && !organRole) {
-        navigate("/social");
+       navigate("/social");
       } else {
-        systemRole
-          ? setPermCirconscription(systemRole)
-          : setPermCirconscription(organRole);
-          dispatch(getMembersList(members))
-          user.membre.role.organe.universite.id !== 0 && setRestrictMembers(true);
+        dispatch(getMembersList(members));
+         systemRole  && setRestrictMembers(false);
+        if(universities.length === 0){
+          dispatch(getUniversitiesList())
+        }
+        if(roles.length === 0){
+          dispatch(getRolesList())
+        }
       }
     }
   }, []);
@@ -49,12 +53,24 @@ const GestionMembre = () => {
         <p className="text-center text-md pt-1 ">
           Liste des membres présent dans{" "}
           <span className="font-bold text-secondary">
-            {!restrictMembers
-              ? "tout le système"
-              : "votre organe"}
+            {!restrictMembers ? "tout le système" : "votre organe"}
           </span>{" "}
         </p>
-        <MembersListTable listeMembres={!restrictMembers? members : members.filter(elt => elt.membre.universite.id === user.membre.role.organe.universite.id)} restrict ={restrictMembers}/>
+        <MembersListTable
+          listeMembres={
+            !restrictMembers
+              ? members
+              : members.filter(
+                  (elt) =>
+                    user.membre.universite.id ===
+                    elt.membre.role.organe.universite.id
+                )
+          }
+          restrict={restrictMembers}
+          universities ={universities}
+          roles={roles}
+          user={user}
+        />
       </section>
     </HelmetProvider>
   );

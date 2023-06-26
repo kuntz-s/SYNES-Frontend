@@ -135,7 +135,6 @@ const RolesModal = ({
             />
           </div>
         </div>
-        =
       </div>
     </Modal>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import {BsCalendar2Date} from "react-icons/bs"
 import { FaChalkboardTeacher, FaArrowRight } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -17,6 +18,12 @@ const sidebarItems = [
     title: "Gestion membres",
     link: "/dashboard/gestion-membres",
     icon: <HiOutlineUserGroup />,
+  },
+  
+  {
+    title: "Gestion évènements",
+    link: "/dashboard/gestion-evenements",
+    icon: <BsCalendar2Date />,
   },
   {
     title: "A propos",

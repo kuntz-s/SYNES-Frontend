@@ -4,8 +4,10 @@ import Helmet from "../../../components/Helmet/Helmet";
 import Navbar from "../../../layout/navbar/Navbar";
 import Footer from "../../../layout/footer/Footer";
 import HeroSection from "../components/HeroSection";
+import { transformDate } from "../../../components/Constant";
 
 const HomePage = () => {
+  transformDate(new Date())
   return (
     <HelmetProvider>
       <Helmet title="Synes-Accueil" description="page d'accueil du synes" />

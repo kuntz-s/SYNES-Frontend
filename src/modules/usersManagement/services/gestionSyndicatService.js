@@ -28,9 +28,6 @@ export const getRolePermissions = (id) => {
   return axiosInstance.get(rootLink + `/listePermissionsRole/${id}`,{data:null});
 }
 
-export const getMembres = () => {
-  return axiosInstance.get(rootLink + "/listeMembres",{data:null});
-}
 
 export const createUniversity = (data)=>{
     return axiosInstance.post(rootLink+ "/createUniv", data, config);

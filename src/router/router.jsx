@@ -7,6 +7,7 @@ import SidebarMenu from "../layout/sidebar/socialSidebar/SidebarMenu";
 import DashboardSidebarMenu from "../layout/sidebar/dashboardSidebar/DashboardSidebarMenu";
 import GestionSyndicat from "../modules/usersManagement/pages/GestionSyndicat";
 import GestionMembre from "../modules/usersManagement/pages/GestionMembre";
+import GestionEvenement from "../modules/financeManagement/pages/GestionEvenement";
 
 export const router = createBrowserRouter(
     [
@@ -35,6 +36,10 @@ export const router = createBrowserRouter(
                   {
                     path:"/social/dashboard/gestion-membres",
                     element:<GestionMembre/>
+                  },
+                  {
+                    path:"/social/dashboard/gestion-evenements",
+                    element:<GestionEvenement/>
                   },
                   {
                     path:"/social/dashboard/*",

@@ -39,6 +39,7 @@ const titleContainerVariants = {
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const userInfo = localStorage.getItem("userInfo");
   return (
     <section className="  min-h-[80vh] w-[85%] mx-auto flex flex-col md:flex-row  items-center justify-center  md:justify-between ">
       <motion.div
@@ -66,9 +67,9 @@ const HeroSection = () => {
         <div className="[&>*]:text-sm md:[&>*]:text-base [&>*]:py-[6px] [&>*]:font-thin [&>*]:hover:cursor-pointer mt-6 ">
           <button
             className="bg-secondary text-white px-6  border border-secondary  hover:bg-transparent hover:text-secondary mr-4 md:mr-10"
-            onClick={() => navigate("/login")}
+            onClick={() => {userInfo? navigate("/social"):navigate("/login")}}
           >
-            Connexion
+            {userInfo ? "Mon réseau":"Connexion"}
           </button>
           <button
             className="  border border-primary  px-4 bg-transparent text-primary hover:bg-primary hover:text-white "
