@@ -54,7 +54,7 @@ const LoginComponent = () => {
           theme: "light",
         });
       } else if (success && !error) {
-        navigate("/social");
+        navigate("/social/actualite");
       }
     }
   }, [error, success]);

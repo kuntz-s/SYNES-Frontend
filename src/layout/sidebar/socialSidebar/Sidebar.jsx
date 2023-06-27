@@ -11,8 +11,9 @@ import {
   BsCalendar2Day,
   BsCalendar2DayFill,
 } from "react-icons/bs";
+import {BiLogOut} from "react-icons/bi";
 import { FaSearch } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { IoNewspaperOutline, IoNewspaperSharp } from "react-icons/io5";
 import { MdHomeFilled, MdDashboard, MdOutlineDashboard ,MdOutlineHome} from "react-icons/md";
 import { IoPersonCircleOutline, IoPersonCircleSharp } from "react-icons/io5";
 import { logoutUser } from "../../../redux/userSlice";
@@ -21,10 +22,10 @@ import logo from "../../../assets/img/logo.png";
 const sidebarItems = [
   {
     id:1,
-    title: "Accueil",
-    link: "accueil",
-    icon: <MdOutlineHome className="translate-y-[-2px] scale-[1.6]" />,
-    iconHover: <MdHomeFilled className="translate-y-[-2px] scale-[1.6]" />,
+    title: "Actualité",
+    link: "actualite",
+    icon: <IoNewspaperOutline className="translate-y-[-1px] scale-[1.2]" />,
+    iconHover: <IoNewspaperSharp className="translate-y-[-1px] scale-[1.2]" />,
   },
   {
     
@@ -79,10 +80,10 @@ const sidebarItems = [
   {
     
     id:8,
-    title: "Plus",
-    link: "plus",
-    icon: <GiHamburgerMenu className="scale-[1.2] translate-y-[-1px]" />,
-    iconHover: <GiHamburgerMenu className="scale-[1.2] translate-y-[-1px]" />,
+    title: "Deconnexion",
+    link: "Deconnexion",
+    icon: <BiLogOut className="scale-[1.2] translate-y-[-1px]" />,
+    iconHover: <BiLogOut className="scale-[1.2] translate-y-[-1px]" />,
   },
 ];
 
@@ -118,12 +119,19 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("userToken");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   useEffect(() => {
     
     if(!token){
       navigate("/login")
-    } 
+    } else {
+      console.log("userinfo",userInfo)
+      if(location.pathname==="/social"){
+          navigate("/social/actualite");
+          navigate(0)
+      }
+    }
 
   },[])
 
@@ -172,7 +180,7 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
                 variants={hoverButtonVariants}
                 whileHover={verifyResponsive() ? "hoverShrink":"hover"}
                 key={item.id}
-                className="bg-white text-primary relative hover:cursor-pointer  flex items-center my-2 p-3 rounded-md "
+                className={`bg-white text-primary relative hover:cursor-pointer  flex items-center my-2 p-3 rounded-md ${item.id ===6 && userInfo.listPermission.length ===0 ? "hidden" :"flex"}`}
                 onClick={() => handleNavigation(item.id, item.link)}
               >
                 <span className="text-xl">

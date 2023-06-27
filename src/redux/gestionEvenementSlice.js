@@ -26,6 +26,7 @@ export const postEvenement = createAsyncThunk(
       console.log("event posted res is", res);
       return res.data;
     } catch (error) {
+      console.log("error is ",error)
       // return custom error message from API if any
       if (error.response && error.response.data.errors) {
         return rejectWithValue(error.response.data.errors);

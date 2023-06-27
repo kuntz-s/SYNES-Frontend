@@ -10,6 +10,7 @@ import { getUniversitiesList, getRolesList } from "../../../redux/gestionSyndica
 const acceptedPermissions = [
   "Attributtion role systeme",
   "Attributtion role organe",
+  "Création membre"
 ];
 
 const GestionMembre = () => {
@@ -27,7 +28,8 @@ const GestionMembre = () => {
       const list = user.listPermission;
       const systemRole = list.find((elt) => elt === acceptedPermissions[0]);
       const organRole = list.find((elt) => elt === acceptedPermissions[1]);
-      if (!systemRole && !organRole) {
+      const memberRole = list.find((elt) => elt === acceptedPermissions[2])
+      if (!systemRole && !organRole && !memberRole) {
        navigate("/social");
       } else {
         dispatch(getMembersList(members));

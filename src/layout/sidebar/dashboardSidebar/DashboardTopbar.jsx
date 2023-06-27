@@ -7,6 +7,7 @@ import {
 import profile from "../../../assets/img/teacher.png";
 
 const DashboardTopbar = ({shrink, changeShrink}) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
   return (
     <div
           className="w-full shadow-lg bg-white flex justify-end py-2 px-3 md:px-5 sticky top-0 "
@@ -29,9 +30,9 @@ const DashboardTopbar = ({shrink, changeShrink}) => {
             <p
               className={`${
                 !shrink ? "hidden md:block" : "block"
-              } text-sm md:text-[16px] text-slate-600 font-medium mr-3 `}
+              } text-sm md:text-[16px] text-slate-600 font-medium mr-3 capitalize`}
             >
-              Nchouwet Stephane
+              {userInfo.membre.noms} {userInfo.membre.prenom}
             </p>
             <img
               src={profile}

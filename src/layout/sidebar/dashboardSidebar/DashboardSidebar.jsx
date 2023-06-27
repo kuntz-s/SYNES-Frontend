@@ -1,36 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import {BsCalendar2Date} from "react-icons/bs"
+import { BsCalendar2Date } from "react-icons/bs";
 import { FaChalkboardTeacher, FaArrowRight } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { HiOutlineUserGroup } from "react-icons/hi";
-import { Link, useLocation } from "react-router-dom";
 
 const sidebarItems = [
   {
     title: "Gestion syndicat",
+    permission: "Gestion Syndicat",
     link: "/dashboard/gestion-syndicat",
     icon: <FaChalkboardTeacher />,
   },
   {
     title: "Gestion membres",
+    permission: "Création membre",
     link: "/dashboard/gestion-membres",
     icon: <HiOutlineUserGroup />,
   },
-  
+
   {
     title: "Gestion évènements",
+    permission: "Gestion Evènement",
     link: "/dashboard/gestion-evenements",
     icon: <BsCalendar2Date />,
   },
   {
     title: "A propos",
+    permission: null,
     link: "/dashboard/a-propos",
     icon: <AiOutlineInfoCircle />,
   },
-  { title: "Retour accueil", link: "/accueil", icon: <FaArrowRight /> },
+  {
+    title: "Retour accueil",
+    permission: null,
+    link: "/accueil",
+    icon: <FaArrowRight />,
+  },
 ];
 
 const sidebarContainerVariants = {
@@ -44,6 +53,32 @@ const sidebarContainerVariants = {
 
 const DashboardSidebar = ({ shrink }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/connexion");
+    } else {
+      if (userInfo.listPermission.length === 0) {
+        alert("vous n'avez pas le droit d'accéder à cette section");
+        navigate("/social/actualite");
+      }
+    }
+  });
+
+  const verifyPermission = (perm) => {
+    if (!perm) {
+      return true;
+    } else {
+      const res = userInfo.listPermission.find((permission)=> permission.includes(perm));
+      if(res){
+        return true
+      } else {
+        return false
+      }
+    }
+  };
 
   return (
     <motion.div
@@ -65,8 +100,9 @@ const DashboardSidebar = ({ shrink }) => {
       </div>
       <div className="mt-[6vh]">
         {sidebarItems.map((item, id) => {
+          const verifyAccess = verifyPermission(item.permission)
           return (
-            <Link to={"/social"+item.link} key={id} className="relative">
+            <Link to={"/social" + item.link} key={id} className={` relative ${!verifyAccess && "hidden"}`}>
               <p
                 key={id}
                 className={`${

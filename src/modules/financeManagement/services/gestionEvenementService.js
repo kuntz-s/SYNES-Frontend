@@ -12,8 +12,15 @@ const config = {
   }
   
 
-  export const createEvenement = () => {
+  export const createEvenement = (data) => {
     return axiosInstance.post(rootLink + "/createEvent",data, config);
   }
   
+
+  export const deleteEvenement = (id) => {
+    return axiosInstance.delete(rootLink + `/deleteEvent/${id}`,{data:null});
+  }
+  
+
+
 
