@@ -1,3 +1,7 @@
+
+import { format } from "date-fns/esm";
+import { fr } from "date-fns/esm/locale";
+
 //transformer une date pour qu'elle prenne la forme YYYY-MM-DD
 
 export const transformDate = (date) => {
@@ -14,4 +18,18 @@ export const transformDate = (date) => {
     "-" +
     actual.day.toString().padStart(2, "0");
   return result;
+};
+
+export const dateInFrench = (date) => {
+  var journée = format(date, "EEEE", { locale: fr });
+  var moisComplet = format(date, "MMMM", { locale: fr });
+  var moisPartiel = format(date, "MMM", { locale: fr });
+
+  return {
+    journée: journée,
+    jour:date.getDate(),
+    année:date.getFullYear(),
+    moisComplet: moisComplet,
+    moisPartiel: moisPartiel,
+  };
 };

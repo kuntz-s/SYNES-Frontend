@@ -22,10 +22,10 @@ import logo from "../../../assets/img/logo.png";
 const sidebarItems = [
   {
     id:1,
-    title: "Actualité",
+    title: "Actualités",
     link: "actualite",
     icon: <IoNewspaperOutline className="translate-y-[-1px] scale-[1.2]" />,
-    iconHover: <IoNewspaperSharp className="translate-y-[-1px] scale-[1.2]" />,
+    iconHover: <IoNewspaperSharp className="translate-y-[-1px] scale-[1.2] text-secondary" />,
   },
   {
     
@@ -33,7 +33,7 @@ const sidebarItems = [
     title: "Recherche",
     link: "recherche",
     icon: <BsSearch className="scale-[1.1] translate-y-[-2px]" />,
-    iconHover: <FaSearch className="scale-[1.1] translate-y-[-2px]" />,
+    iconHover: <FaSearch className="scale-[1.1] translate-y-[-2px] text-secondary" />,
   },
   {
     
@@ -41,7 +41,7 @@ const sidebarItems = [
     title: "Evènements",
     link: "evenement",
     icon: <BsCalendar2Day className="scale-[1.1] translate-y-[-2px]" />,
-    iconHover: <BsCalendar2DayFill className="scale-[1.1] translate-y-[-2px]" />,
+    iconHover: <BsCalendar2DayFill className="scale-[1.1] translate-y-[-2px] text-secondary" />,
   },
   {
     
@@ -49,7 +49,7 @@ const sidebarItems = [
     title: "Notifications",
     link: "notification",
     icon: <BsBell className="scale-[1.2] translate-y-[-2px]" />,
-    iconHover: <BsBellFill className="scale-[1.2] translate-y-[-2px]" />,
+    iconHover: <BsBellFill className="scale-[1.2] translate-y-[-2px] text-secondary" />,
   },
   {
     
@@ -57,7 +57,7 @@ const sidebarItems = [
     title: "Finances",
     link: "finance",
     icon: <BsCreditCard className="scale-[1.1] translate-y-[-1px]" />,
-    iconHover: <BsCreditCardFill className="scale-[1.1] translate-y-[-1px]" />,
+    iconHover: <BsCreditCardFill className="scale-[1.1] translate-y-[-1px] text-secondary" />,
   },
   {
     
@@ -65,7 +65,7 @@ const sidebarItems = [
     title: "Dashboard",
     link: "dashboard",
     icon: <MdOutlineDashboard className="scale-[1.2] translate-y-[-2px]" />,
-    iconHover: <MdDashboard className="scale-[1.2] translate-y-[-1px]" />,
+    iconHover: <MdDashboard className="scale-[1.2] translate-y-[-1px] text-secondary" />,
   },
   {
     
@@ -74,7 +74,7 @@ const sidebarItems = [
     link: "profil",
     icon: <IoPersonCircleOutline className="scale-[1.3] translate-y-[-2px]" />,
     iconHover: (
-      <IoPersonCircleSharp className="scale-[1.3] translate-y-[-2px]" />
+      <IoPersonCircleSharp className="scale-[1.3] translate-y-[-2px] text-secondary" />
     ),
   },
   {
@@ -126,7 +126,6 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
     if(!token){
       navigate("/login")
     } else {
-      console.log("userinfo",userInfo)
       if(location.pathname==="/social"){
           navigate("/social/actualite");
           navigate(0)
@@ -149,7 +148,6 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
     localStorage.removeItem("userInfo");
     dispatch(logoutUser());
     navigate("/");
-    navigate(0);
    }
    else {
     navigate("/social/"+link);
@@ -194,7 +192,7 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
                       ? "hidden"
                       : `${
                           location.pathname.includes(item.link)
-                            ? "font-extrabold"
+                            ? "font-extrabold text-secondary"
                             : "font-regular"
                         } text-base ml-4`
                   }`}

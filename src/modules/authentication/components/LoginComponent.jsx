@@ -43,7 +43,7 @@ const LoginComponent = () => {
     
   const userToken = localStorage.getItem("userToken");
     if (userToken) {
-      navigate("/social");
+      navigate("/social/actualite");
     } else {
       if (error && !success) {
         toast.error("Utilisateur non trouvé", {

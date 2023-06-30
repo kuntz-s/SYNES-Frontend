@@ -67,7 +67,7 @@ const HeroSection = () => {
         <div className="[&>*]:text-sm md:[&>*]:text-base [&>*]:py-[6px] [&>*]:font-thin [&>*]:hover:cursor-pointer mt-6 ">
           <button
             className="bg-secondary text-white px-6  border border-secondary  hover:bg-transparent hover:text-secondary mr-4 md:mr-10"
-            onClick={() => {userInfo? navigate("/social"):navigate("/login")}}
+            onClick={() => {userInfo? navigate("/social/actualite"):navigate("/login")}}
           >
             {userInfo ? "Mon réseau":"Connexion"}
           </button>

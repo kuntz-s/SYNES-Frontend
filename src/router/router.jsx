@@ -8,6 +8,8 @@ import DashboardSidebarMenu from "../layout/sidebar/dashboardSidebar/DashboardSi
 import GestionSyndicat from "../modules/usersManagement/pages/GestionSyndicat";
 import GestionMembre from "../modules/usersManagement/pages/GestionMembre";
 import GestionEvenement from "../modules/financeManagement/pages/GestionEvenement";
+import EventsPage from "../modules/social/pages/EventsPage";
+import Test from "../components/Test";
 
 export const router = createBrowserRouter(
     [
@@ -19,6 +21,10 @@ export const router = createBrowserRouter(
       {
         path:"/login",
         element:<LoginPage/>
+      },
+      {
+        path:"/test",
+        element:<Test/>
       },
       { 
           path:"/social",
@@ -46,6 +52,10 @@ export const router = createBrowserRouter(
                     element:<div>autre gestion</div>
                   }
                 ]
+              },
+              {
+                path:"/social/evenement",
+                element:<EventsPage/>
               },
               {
                 path:"/social/*",
