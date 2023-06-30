@@ -1,5 +1,7 @@
 import React from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
+/* import SockJS from "sockjs-client";
+import Stomp from "stompjs"; */
 import StatTitle from "../../../../components/baseComponents/StatTitle";
 import Button from "../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../components/baseComponents/MaterialTable";
@@ -22,6 +24,7 @@ const imgList = [
   },
 ]; 
 
+var stompClient=null;
 
 const EventListTable = ({ data, handleOpen,handleDelete }) => {
 
@@ -75,6 +78,31 @@ const EventListTable = ({ data, handleOpen,handleDelete }) => {
       Cell: ({ cell }) => <span >{cell.getValue().noms} {cell.getValue().prenom}</span>, //optional custom cell render
     }
   ];
+
+  /* const connect = () => {
+    const socket = new SockJS('http://localhost:8080/stomp-endpoint');
+    // Create a STOMP client
+   stompClient = Stomp.over(socket);
+    // Set up STOMP client
+    stompClient.connect({},onConnected,onError);
+  }
+
+  const onConnected = () => {
+    console.log("je suis de nouveau connecté connecté")
+    stompClient.subscribe('/topic/sendNotification', onMessageReceived);
+  }
+
+  const onError = () => {
+    console.log("il y'a une erreur")
+  }
+
+  const onMessageReceived = (payload) => {
+    console.log("je suis ici oh dans message received")
+    var newPayload = JSON.parse(payload.body);
+    
+    console.log("payload", payload, " and parsed payload ", newPayload);
+  }
+  */
   
 
   return (

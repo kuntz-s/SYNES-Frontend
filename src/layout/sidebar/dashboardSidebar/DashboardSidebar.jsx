@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BsCalendar2Date } from "react-icons/bs";
 import { FaChalkboardTeacher, FaArrowRight } from "react-icons/fa";
+import { GrTransaction } from "react-icons/gr";
 import { MdDashboard } from "react-icons/md";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
@@ -27,6 +28,12 @@ const sidebarItems = [
     permission: "Gestion Evènement",
     link: "/dashboard/gestion-evenements",
     icon: <BsCalendar2Date />,
+  },
+  {
+    title: "Gestion Transaction",
+    permission: "Gestion transaction",
+    link: "/dashboard/gestion-transaction",
+    icon: <GrTransaction />,
   },
   {
     title: "A propos",
