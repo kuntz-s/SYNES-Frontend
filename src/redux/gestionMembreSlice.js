@@ -8,7 +8,7 @@ import {
 export const getMembersList = createAsyncThunk("data/getMembers", async () => {
   try {
     const membersData = await getMembers();
-    console.log("list members data is ", membersData);
+  //  console.log("list members data is ", membersData);
     return membersData.data;
   } catch (error) {
     console.error("member error is ", error);

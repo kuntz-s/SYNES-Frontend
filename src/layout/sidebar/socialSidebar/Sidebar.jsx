@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from "react";
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch ,useSelector} from "react-redux";
 import {
   BsSearch,
   BsBellFill,
@@ -113,11 +113,11 @@ const sidebarContainerVariants = {
 
 
 
-const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
+const Sidebar = ({smScreen,mdScreen, lgScreen,shrink, handleOpen,openNotif, handleClose}) => {
   const dispatch = useDispatch();
-  const [shrink, setShrink] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const {unreadNotif,unreadPrivateNotif} = useSelector((state) => state.gestionNotification);
   const token = localStorage.getItem("userToken");
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
@@ -148,9 +148,14 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
     localStorage.removeItem("userInfo");
     dispatch(logoutUser());
     navigate("/");
+    handleClose();
+   }
+   else if (id === 4){
+    handleOpen();
    }
    else {
     navigate("/social/"+link);
+    handleClose();
    }
   }
 
@@ -182,16 +187,17 @@ const Sidebar = ({smScreen,mdScreen, lgScreen}) => {
                 onClick={() => handleNavigation(item.id, item.link)}
               >
                 <span className="text-xl">
-                  {!location.pathname.includes(item.link)
-                    ? item.icon
-                    : item.iconHover}
+                  {(location.pathname.includes(item.link) && !openNotif) || (openNotif && item.id === 4)
+                    ? item.iconHover
+                    : item.icon}
                 </span>
+                <span className={`${(item.id !== 4 || (unreadNotif + unreadPrivateNotif) < 1 ) && "hidden"} absolute top-1 left-6 px-1 text-[12px] text-white bg-red-600  rounded-lg`} >{unreadNotif + unreadPrivateNotif}</span>
                 <span
                   className={`${
                     verifyResponsive()
                       ? "hidden"
                       : `${
-                          location.pathname.includes(item.link)
+                          (location.pathname.includes(item.link) && !openNotif) || (openNotif && item.id === 4)
                             ? "font-extrabold text-secondary"
                             : "font-regular"
                         } text-base ml-4`

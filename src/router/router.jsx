@@ -12,6 +12,7 @@ import EventsPage from "../modules/social/pages/EventsPage";
 import GestionTransaction from "../modules/financeManagement/pages/GestionTransaction";
 import Test from "../components/Test";
 
+
 export const router = createBrowserRouter(
     [
       {  
@@ -25,7 +26,7 @@ export const router = createBrowserRouter(
       },
       {
         path:"/test",
-        element:<Test/>
+        element:<Test />
       },
       { 
           path:"/social",

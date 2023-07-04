@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 var stompClient = null;
-const Test = () => {
+const Test = ({steph}) => {
   
   const connect = () => {
     const socket = new SockJS('http://localhost:8080/stomp-endpoint');
@@ -19,9 +19,10 @@ const Test = () => {
   }
 
   const onError = () => {
-    console.log("il y'a une erreur")
+    console.log("il y'a une ecdrreur")
   }
  
+  console.log("steph is",steph)
 
  
   return (

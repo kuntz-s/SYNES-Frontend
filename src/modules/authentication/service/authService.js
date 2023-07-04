@@ -1,4 +1,4 @@
-import axiosInstance from "../../../../../../DOSSIER MEDICAL/dossiermedical2023/src/config/axios";
+import axiosInstance from "../../../config/axios";
 
 const rootLink = import.meta.env.VITE_REACT_APP_PROXY_URL;
 const config = {

@@ -9,7 +9,7 @@ export const getListeEvenements = createAsyncThunk(
   async () => {
     try {
       const eventsData = await getEvenements();
-      console.log("list evenements data is ", eventsData);
+    //  console.log("list evenements data is ", eventsData);
       return eventsData.data;
     } catch (error) {
       console.error("member error is ", error);

@@ -31,5 +31,7 @@ export const dateInFrench = (date) => {
     année:date.getFullYear(),
     moisComplet: moisComplet,
     moisPartiel: moisPartiel,
+    heure: date.getHours(),
+    minute:date.getMinutes()
   };
 };
