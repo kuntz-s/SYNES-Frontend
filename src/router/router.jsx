@@ -10,6 +10,8 @@ import GestionMembre from "../modules/usersManagement/pages/GestionMembre";
 import GestionEvenement from "../modules/financeManagement/pages/GestionEvenement";
 import EventsPage from "../modules/social/pages/EventsPage";
 import GestionTransaction from "../modules/financeManagement/pages/GestionTransaction";
+import UserProfile from "../modules/social/pages/UserProfile";
+import FinancePage from "../modules/financeManagement/pages/FinancePage";
 import Test from "../components/Test";
 
 
@@ -33,6 +35,18 @@ export const router = createBrowserRouter(
           element:<SidebarMenu/>,
           errorElement:<SidebarMenu/>,
           children:[
+              {
+                path:"/social/evenement",
+                element:<EventsPage/>
+              },
+              {
+                path:"/social/finance",
+                element:<FinancePage/>
+              },
+              {
+                path:"/social/profil/:profileId",
+                element:<UserProfile/>
+              },
               {
                 path:"/social/dashboard",
                 element:<DashboardSidebarMenu/>,
@@ -60,10 +74,7 @@ export const router = createBrowserRouter(
                   }
                 ]
               },
-              {
-                path:"/social/evenement",
-                element:<EventsPage/>
-              },
+              
               {
                 path:"/social/*",
                 element:<div>Accueil</div>

@@ -152,6 +152,9 @@ const Sidebar = ({smScreen,mdScreen, lgScreen,shrink, handleOpen,openNotif, hand
    }
    else if (id === 4){
     handleOpen();
+   } else if (id === 7){
+    navigate("/social/"+link+ "/"+ userInfo.membre.id);
+    handleClose();
    }
    else {
     navigate("/social/"+link);

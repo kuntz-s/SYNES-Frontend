@@ -72,10 +72,10 @@ export const gestionNotificationSlice = createSlice({
       state.eventSuccess = false;
     }, */
     addPublicNotif : (state, action) => {
-      state.publicNotifications.push(action.payload);
+      state.publicNotifications.unshift(action.payload);
     },
     addPrivateNotif:(state, action) => {
-      state.privateNotifications.push(action.payload);
+      state.privateNotifications.unshift(action.payload);
     },
     incrementUnreadNotifCount: (state, action) => {
       state.unreadNotif +=1;

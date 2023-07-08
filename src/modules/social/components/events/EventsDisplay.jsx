@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { compareAsc } from "date-fns";
 import {BsCalendar2,BsPersonCircle} from "react-icons/bs";
-import { dateInFrench } from "../../../components/Constant";
-import event from "../../../assets/img/event.svg";
-import event1 from "../../../assets/img/event1.jpg";
-import event2 from "../../../assets/img/event2.jpg";
+import { dateInFrench } from "../../../../components/Constant";
+import event from "../../../../assets/img/event.svg";
+import event1 from "../../../../assets/img/event1.jpg";
+import event2 from "../../../../assets/img/event2.jpg";
 
 const imgList = [
   {

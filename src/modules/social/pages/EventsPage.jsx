@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getListeEvenements } from "../../../redux/gestionEvenementSlice";
 import { addPublicNotif } from "../../../redux/gestionNotificationSlice";
 import Helmet from "../../../components/Helmet/Helmet";
-import EventsDisplay from "../components/EventsDisplay";
-import NoEvent from "../components/NoEvent";
+import EventsDisplay from "../components/events/EventsDisplay";
+import NoEvent from "../components/events/NoEvent";
 
 
 

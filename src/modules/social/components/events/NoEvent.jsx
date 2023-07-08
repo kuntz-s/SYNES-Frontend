@@ -1,5 +1,5 @@
 import React from 'react';
-import event from "../../../assets/img/event.svg"
+import event from "../../../../assets/img/event.svg"
 
 const NoEvent = () => {
   return (
