@@ -14,8 +14,9 @@ import {
   incrementUnreadNotifCount,
   incrementUnreadPrivateNotifCount,
 } from "../../../redux/gestionNotificationSlice";
+import { getListeTransactions } from "../../../redux/gestionTransactionSlice";
+import { incrementUnreadSoldeCount, addSolde } from "../../../redux/gestionSoldeSlice";
 import NotificationsPage from "../../../modules/social/pages/NotificationsPage";
-import BottomSidebar from "./BottomSidebar";
 
 const rootLink = import.meta.env.VITE_REACT_APP_PROXY_URL;
 var stompClient = null;
@@ -50,6 +51,10 @@ const SidebarMenu = () => {
       "/specific/" + user.membre.id,
       onPrivateNotificationReceived
     );
+    stompClient.subscribe(
+      "/topic/solde",
+      onSoldeReceive
+    )
   };
 
   const onPublicNotificationReceived = (payload) => {
@@ -69,6 +74,13 @@ const SidebarMenu = () => {
       dispatch(addPrivateNotif(parsedRes));
     }
   };
+
+  const onSoldeReceive = (payload) =>{
+    const newSolde = parseInt(payload.body);
+    dispatch(addSolde(newSolde));
+    dispatch(incrementUnreadSoldeCount());
+    dispatch(getListeTransactions())
+  }
 
   useEffect(() => {
     dispatch(getNotificationsPublic());

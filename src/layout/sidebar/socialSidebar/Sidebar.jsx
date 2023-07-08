@@ -17,6 +17,7 @@ import { IoNewspaperOutline, IoNewspaperSharp } from "react-icons/io5";
 import { MdHomeFilled, MdDashboard, MdOutlineDashboard ,MdOutlineHome} from "react-icons/md";
 import { IoPersonCircleOutline, IoPersonCircleSharp } from "react-icons/io5";
 import { logoutUser } from "../../../redux/userSlice";
+import { resetSoldeCount } from "../../../redux/gestionSoldeSlice";
 import logo from "../../../assets/img/logo.png";
 
 const sidebarItems = [
@@ -118,6 +119,7 @@ const Sidebar = ({smScreen,mdScreen, lgScreen,shrink, handleOpen,openNotif, hand
   const navigate = useNavigate();
   const location = useLocation();
   const {unreadNotif,unreadPrivateNotif} = useSelector((state) => state.gestionNotification);
+  const {unreadSolde} = useSelector((state) => state.gestionSolde);
   const token = localStorage.getItem("userToken");
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
@@ -152,6 +154,10 @@ const Sidebar = ({smScreen,mdScreen, lgScreen,shrink, handleOpen,openNotif, hand
    }
    else if (id === 4){
     handleOpen();
+   } else if (id===5){
+    navigate("/social/"+link);
+    handleClose();
+    dispatch(resetSoldeCount())
    } else if (id === 7){
     navigate("/social/"+link+ "/"+ userInfo.membre.id);
     handleClose();
@@ -195,6 +201,7 @@ const Sidebar = ({smScreen,mdScreen, lgScreen,shrink, handleOpen,openNotif, hand
                     : item.icon}
                 </span>
                 <span className={`${(item.id !== 4 || (unreadNotif + unreadPrivateNotif) < 1 ) && "hidden"} absolute top-1 left-6 px-1 text-[12px] text-white bg-red-600  rounded-lg`} >{unreadNotif + unreadPrivateNotif}</span>
+                <span className={`${(item.id !== 5 || (unreadSolde) < 1 ) && "hidden"} absolute top-1 left-6 px-1 text-[12px] text-white bg-red-600  rounded-lg`} >{unreadSolde}</span>
                 <span
                   className={`${
                     verifyResponsive()

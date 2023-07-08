@@ -7,7 +7,7 @@ import ProfileAnnonce from "../components/userProfile/ProfileAnnonce";
 import ProfileWarning from "../components/userProfile/ProfileWarning";
 import ProfileTransaction from "../components/userProfile/ProfileTransaction";
 
-const temp = {
+/* const temp = {
   membre: {
     id: 1,
     matricule: "12x034euy1",
@@ -184,7 +184,7 @@ const temp = {
   avertissementList: [],
   annonceList: [],
 };
-
+ */
 const profileSections = ["Annonces", "Transactions", "Avertissements"]
 
 const UserProfile = () => {
@@ -227,7 +227,7 @@ const UserProfile = () => {
         </div>
       ) : (
         <section className=" min-h-screen overflow-y-auto w-[85%] py-8 mx-auto">
-          <ProfileInfo data={temp} />
+          <ProfileInfo data={userData} />
           <div className="border-t border-slate-300 my-16">
             <div className="flex justify-around ">
               {
@@ -239,13 +239,13 @@ const UserProfile = () => {
               }
             </div>
             <div className={selectedSection !== profileSections[0] && "hidden"}>
-            <ProfileAnnonce data={temp}/>
+            <ProfileAnnonce data={userData}/>
             </div>
            <div className={selectedSection !== profileSections[1] && "hidden"}>
-            <ProfileTransaction data={temp}/>
+            <ProfileTransaction data={userData}/>
             </div>
             <div className={selectedSection !== profileSections[2] && "hidden"}>
-            <ProfileWarning data={temp}/>
+            <ProfileWarning data={userData}/>
             </div>
           </div>
         </section>
