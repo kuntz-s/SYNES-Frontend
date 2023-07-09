@@ -12,6 +12,7 @@ import EventsPage from "../modules/social/pages/EventsPage";
 import GestionTransaction from "../modules/financeManagement/pages/GestionTransaction";
 import UserProfile from "../modules/social/pages/UserProfile";
 import FinancePage from "../modules/financeManagement/pages/FinancePage";
+import SearchPage from "../modules/financeManagement/pages/SearchPage";
 import Test from "../components/Test";
 
 
@@ -42,6 +43,11 @@ export const router = createBrowserRouter(
               {
                 path:"/social/finance",
                 element:<FinancePage/>
+              },
+              
+              {
+                path:"/social/recherche",
+                element:<SearchPage/>
               },
               {
                 path:"/social/profil/:profileId",

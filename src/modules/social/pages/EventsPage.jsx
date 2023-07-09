@@ -16,7 +16,6 @@ const EventsPage = () => {
   useEffect(() => {
     dispatch(getListeEvenements());
   }, []);
-  console.log("event is ", events);
   return (
     <HelmetProvider>
       <Helmet
