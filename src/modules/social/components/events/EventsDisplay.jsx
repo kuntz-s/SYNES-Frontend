@@ -3,6 +3,7 @@ import axiosInstance from "../../../../config/axios";
 import { compareAsc } from "date-fns";
 import {BsCalendar2,BsPersonCircle, BsCash} from "react-icons/bs";
 import { dateInFrench } from "../../../../components/Constant";
+import EventModal from "./EventModal";
 import event from "../../../../assets/img/event.svg";
 import event1 from "../../../../assets/img/event1.jpg";
 import event2 from "../../../../assets/img/event2.jpg";
@@ -31,9 +32,11 @@ const filterOptions = [
 ];
 
 const EventsDisplay = ({ events }) => {
+  const [openModal, setOpenModal] = useState(false)
   const [option, setOption] = useState({ period: "Tout", active: null });
   const [contributions, setContributions] = useState([]);
   const [participations, setParticipations] = useState([]);
+  const [selectedParticipants, setSelectedParticipants] = useState([]);
  
 
   
@@ -42,7 +45,8 @@ const EventsDisplay = ({ events }) => {
       const getListContribution = async() => {
         var contributionList = []
         for(let elt of events){
-          try{
+          try{ 
+        localStorage.setItem("fileType", false);
             const contribution = await axiosInstance.get(import.meta.env.VITE_REACT_APP_PROXY_URL + "/soldeEvent/"+elt.id,{data:null});
             contributionList.push({id:elt.id,value:contribution.data})
           } catch(error){
@@ -55,7 +59,8 @@ const EventsDisplay = ({ events }) => {
       const getListParticipation = async() => {
         var participationList = []
         for(let elt of events){
-          try{
+          try{         
+            localStorage.setItem("fileType", false);
             const participation = await axiosInstance.get(import.meta.env.VITE_REACT_APP_PROXY_URL + "/eventMembers/"+elt.id,{data:null});
             participationList.push({id:elt.id,value:participation.data})
           } catch(error){
@@ -96,7 +101,7 @@ const EventsDisplay = ({ events }) => {
             const contribution = contributions.find((elt) => elt.id === event.id);
             const participation = participations.find((elt) => elt.id === event.id);
             return (
-            <div key={event.id} className={`mt-2 border border-slate-100 shadow-sm rounded-md p-2 hover:shadow-md hover:cursor-pointer`}>
+            <div key={event.id} className={`mt-2 border border-slate-100 shadow-sm rounded-md p-2 hover:shadow-md hover:cursor-pointer`} onClick={() => {setOpenModal(true); setSelectedParticipants(participation.value)}}>
               <img
                 src={imgList[parseInt(event.photo)].img}
                 alt="event illustration"
@@ -120,6 +125,7 @@ const EventsDisplay = ({ events }) => {
           );
         })}
       </div>
+      <EventModal open={openModal} data={selectedParticipants} handleClose={() => setOpenModal(false)}/>
     </div>
   );
 };

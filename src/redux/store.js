@@ -6,6 +6,7 @@ import gestionEvenementSlice from "./gestionEvenementSlice";
 import gestionTransactionSlice from "./gestionTransactionSlice";
 import gestionNotificationSlice from "./gestionNotificationSlice";
 import gestionSoldeSlice from "./gestionSoldeSlice";
+import gestionAnnonceSlice from "./gestionAnnonceSlice";
 
 export const store =  configureStore({
     reducer: {
@@ -15,7 +16,8 @@ export const store =  configureStore({
       gestionEvenement:gestionEvenementSlice,
       gestionTransaction:gestionTransactionSlice,
       gestionNotification:gestionNotificationSlice,
-      gestionSolde: gestionSoldeSlice
+      gestionSolde: gestionSoldeSlice,
+      gestionAnnonce:gestionAnnonceSlice
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

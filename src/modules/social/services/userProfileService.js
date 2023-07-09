@@ -8,6 +8,12 @@ const config = {
   };
 
   export const getUserProfile = (id) => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.get(rootLink + "/user/"+id,{data:null});
   }
   
+
+  export const updateUserProfile = (data) => {
+    localStorage.setItem("fileType", true);
+    return axiosInstance.post(rootLink+ "/setImg", data, config);
+  }

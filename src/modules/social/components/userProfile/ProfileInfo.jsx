@@ -1,24 +1,71 @@
-import React from "react";
-import {BsPerson} from "react-icons/bs"
+import React,{useState} from "react";
+import { useNavigate } from "react-router";
+import {toast, ToastContainer} from "react-toastify";
+import {BsPerson, BsCameraFill} from "react-icons/bs";
 import {FaUniversity} from "react-icons/fa";
 import {FiMail} from "react-icons/fi";
 import { dateInFrench } from "../../../../components/Constant";
+import { updateUserProfile } from "../../services/userProfileService";
+import ProfileModal from "./ProfileModal";;
 import noProfile from "../../../../assets/img/profile1.png";
 
 
 
 const ProfileInfo = ({ data }) => {
   const {membre} = data;
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [photo,setPhoto] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
   const inscription = dateInFrench(new Date(membre.dateInscription));
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  const handleChange = (e) => {
+    const image = e.target.files[0];
+    setPhoto(image);
+  }
+  
+  const handleUpdate =async () => {
+    if(!photo){
+      setPhoto("");
+      setOpenModal(false)
+    } else {
+      setIsLoading(true);
+      var formData = new FormData();
+      formData.append("file", photo);
+      try{
+        const res = await updateUserProfile(formData);
+
+        if(res.status === 200){
+          toast.success("mise à jour réussie");
+          setTimeout(() => {
+            navigate(0);
+          },2000)
+        } else {
+          toast.error("une erreur est survenue lors de la mise à jour");
+        }
+        
+        localStorage.setItem("fileType", false);
+        setIsLoading(false)
+        setOpenModal(false);
+        setPhoto("");
+      } catch(error){
+        toast.error("une erreur est survenue lors de la mise à jour");
+        setIsLoading(false);
+        setOpenModal(false);
+        setPhoto("");
+      }
+    }
+  }
   return (
     <div className="w-full  flex grid grid-cols-3 gap-8">
-      <div className=" w-full flex justify-center">
+      <div className=" w-full flex justify-center relative">
         <img
           src={membre.photo ? membre.photo : noProfile}
           alt="profile pic"
-          className="rounded-full w-[150px] h-[150px] object-cover"
+          className="rounded-full w-[150px] h-[150px] object-cover "
         />
+        <BsCameraFill className={`absolute right-[95px] bottom-12 scale-[1.5] hover:cursor-pointer  ${membre.id !== userInfo.membre.id && "hidden"}`} onClick={() => setOpenModal(true)} />
       </div>
       <div className="col-span-2 w-full">
        <div>
@@ -41,6 +88,8 @@ const ProfileInfo = ({ data }) => {
         <p><BsPerson className="mr-2 scale-[1.2]"/> <span>Membre depuis le {inscription.jour +  " " + inscription.moisComplet + " "+inscription.année}</span></p>
         </div>
       </div>
+      <ToastContainer/>
+      <ProfileModal open={openModal} data={photo} isLoading={isLoading} handleUpdate={handleUpdate} handleClose={() => {setOpenModal(false); setPhoto("")}} handleChange={handleChange}/>
     </div>
   );
 };

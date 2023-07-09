@@ -8,16 +8,19 @@ const config = {
   };
 
   export const getTransactions = () => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.get(rootLink + "/listeTransaction",{data:null});
   }
   
 
   export const createTransaction = (data) => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.post(rootLink + "/createTransaction",data, config);
   }
   
 
   export const deleteTransaction = (id) => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.delete(rootLink + `/deleteTransaction/${id}`,{data:null});
   }
   

@@ -15,35 +15,6 @@ const notifContainerVariants = {
   },
 };
 
-const notifList = [
-  {
-    id: 29,
-    membre: null,
-    contenu:
-      "L'évènement Soutient aux professeurs en grève viens d'ètre créé, vous pouvez le consulter en allant dans la section evènement",
-    envoyéLe: "2023-07-03T12:35:35",
-    typeMessage: "NOUVEL EVENEMENT ",
-    circonscription: "congres",
-  },
-  {
-    id: 30,
-    membre: null,
-    contenu:
-      "L'évènement Soutient aux professeurs en grève viens d'ètre créé, vous pouvez le consulter en allant dans la section evènement",
-    envoyéLe: "2023-07-03T12:35:35",
-    typeMessage: "NOUVEL EVENEMENT ",
-    circonscription: "congres",
-  },
-  {
-    id: 31,
-    membre: null,
-    contenu:
-      "L'évènement Soutient aux professeurs en grève viens d'ètre créé, vous pouvez le consulter en allant dans la section evènement",
-    envoyéLe: "2023-07-03T12:35:35",
-    typeMessage: "NOUVEL EVENEMENT ",
-    circonscription: "congres",
-  },
-];
 
 const notifTypes = ["Public", "Privé"];
 

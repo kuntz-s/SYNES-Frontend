@@ -8,11 +8,13 @@ const config = {
   };
 
   export const getPublicNotifications = () => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.get(rootLink + "/getNotification",{data:null});
   }
   
 
   export const getPrivateNotifications = (data) => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.get(rootLink + "/getPrivateNotification",{data:null});
   }
   

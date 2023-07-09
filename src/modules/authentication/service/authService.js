@@ -8,5 +8,6 @@ const config = {
   };
 
 export const authenticateUser = (data) => {
+  localStorage.setItem("fileType", false);
     return axiosInstance.post(rootLink+ "/login", data, config);
 }

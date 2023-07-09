@@ -8,6 +8,7 @@ const config = {
   };
 
   export const getSolde = () => {
+    localStorage.setItem("fileType", false);
     return axiosInstance.get(rootLink + "/getSolde",{data:null});
   }
   

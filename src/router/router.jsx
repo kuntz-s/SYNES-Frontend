@@ -12,7 +12,8 @@ import EventsPage from "../modules/social/pages/EventsPage";
 import GestionTransaction from "../modules/financeManagement/pages/GestionTransaction";
 import UserProfile from "../modules/social/pages/UserProfile";
 import FinancePage from "../modules/financeManagement/pages/FinancePage";
-import SearchPage from "../modules/financeManagement/pages/SearchPage";
+import SearchPage from "../modules/social/pages/SearchPage";
+import NewsPage from "../modules/social/pages/NewsPage";
 import Test from "../components/Test";
 
 
@@ -36,6 +37,10 @@ export const router = createBrowserRouter(
           element:<SidebarMenu/>,
           errorElement:<SidebarMenu/>,
           children:[
+            {
+              path:"/social/actualite",
+              element:<NewsPage/>
+            },
               {
                 path:"/social/evenement",
                 element:<EventsPage/>
