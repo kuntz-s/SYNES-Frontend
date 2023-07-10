@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HelmetProvider } from "react-helmet-async";
+import { getMembersList } from "../../../redux/gestionMembreSlice";
 import { getUniversitiesList, getOrgansList, getRolesList, getPermissionsList } from "../../../redux/gestionSyndicatSlice";
 import Helmet from "../../../components/Helmet/Helmet";
 import GestionSyndicatComponent from "../components/gestionSyndicat/GestionSyndicatComponent";
@@ -10,12 +11,14 @@ const GestionSyndicat = () => {
   const { universities, organs, roles, permissions } = useSelector(
     (state) => state.gestionSyndicat
   );
+  const { members } = useSelector((state) => state.gestionMembre);
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
   useEffect(() => {
     dispatch(getUniversitiesList());
     dispatch(getOrgansList());
     dispatch(getRolesList());
-    dispatch(getPermissionsList())
+    dispatch(getPermissionsList());
+    dispatch(getMembersList())
   }, [dispatch]);
   return (
     <HelmetProvider>
@@ -39,7 +42,7 @@ const GestionSyndicat = () => {
             </span>
           </p>
         </div>
-        <GestionSyndicatComponent universities={universities} organs={organs} roles = {roles} permissions={permissions} />
+        <GestionSyndicatComponent members={members} universities={universities} organs={organs} roles = {roles} permissions={permissions} />
       </section>
     </HelmetProvider>
   );

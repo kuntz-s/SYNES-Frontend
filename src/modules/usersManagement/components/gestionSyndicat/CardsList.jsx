@@ -5,11 +5,11 @@ import { MdGroups } from "react-icons/md";
 import { TbHierarchy3 } from "react-icons/tb";
 import StatTitle from "../../../../components/baseComponents/StatTitle";
 
-const CardsList = ({ universités, organes, membres }) => {
+const CardsList = ({ members, universités, organes, membres }) => {
   const dataCardList = [
     {
       name: "Nombre de membres du SYNES",
-      value: membres,
+      value: members,
       icon: <MdGroups className="scale-[1.3]" />,
       color: "#0ea5e9",
       backgroundColor: "#bae6fd",

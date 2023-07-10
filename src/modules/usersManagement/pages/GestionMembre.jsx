@@ -32,7 +32,7 @@ const GestionMembre = () => {
       if (!systemRole && !organRole && !memberRole) {
        navigate("/social");
       } else {
-        dispatch(getMembersList(members));
+        dispatch(getMembersList());
          systemRole  && setRestrictMembers(false);
         if(universities.length === 0){
           dispatch(getUniversitiesList())
