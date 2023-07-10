@@ -18,6 +18,12 @@ const config = {
     return axiosInstance.post(rootLink+ "/register", data, config);
 }
 
+export const suspendMember = (id)=>{
+  localStorage.setItem("fileType", false);
+  return axiosInstance.put(rootLink+ "/suspension/"+id,{data:null});
+}
+
+
 export const putMemberRole = (data, restrict)=>{
   localStorage.setItem("fileType", false);
   return axiosInstance.put(rootLink+ `${restrict ? "/giveRoleOrgane":"/giveRoleSystem"}`, data, config);
@@ -28,4 +34,5 @@ export const postAvertissement = (data)=>{
   localStorage.setItem("fileType", false);
   return axiosInstance.post(rootLink+  "/giveAvertissement", data, config);
 }
+
 

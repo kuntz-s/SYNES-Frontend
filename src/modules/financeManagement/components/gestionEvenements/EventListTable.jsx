@@ -86,8 +86,10 @@ const EventListTable = ({ data, handleOpen,handleDelete }) => {
     decimalSeparator: '.',
     showLabels: true,
     useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
+    useKeysAsHeaders: true,
+    showTitle:true,
+    filename:"LISTE DES EVENEMENTS DU SYNES",
+    title:"EVENEMENTS DU SYNES",
   };
   
   const csvExporter = new ExportToCsv(csvOptions)

@@ -123,8 +123,10 @@ const UniversitiesList = ({ universities }) => {
     decimalSeparator: '.',
     showLabels: true,
     useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
+    useKeysAsHeaders: true,
+    showTitle:true,
+    filename:"LISTTE DES UNIVERSITES DU SYNES",
+    title:"UNIVERSITES DU SYNES",
   };
   
   const csvExporter = new ExportToCsv(csvOptions)

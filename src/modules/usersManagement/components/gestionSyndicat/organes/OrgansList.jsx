@@ -134,14 +134,16 @@ const OrgansList = ({ organs }) => {
     decimalSeparator: '.',
     showLabels: true,
     useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
+    useKeysAsHeaders: true,
+    showTitle:true,
+    filename:"LISTE DES ORGANES DU SYNES",
+    title:"ORGANES DU SYNES",
   };
   
   const csvExporter = new ExportToCsv(csvOptions)
 
   const exportData =() => {
-    csvExporter.generateCsv(data)
+    csvExporter.generateCsv(organs)
   }
 
   const handleChange = (e) => {

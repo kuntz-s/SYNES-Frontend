@@ -9,7 +9,7 @@ import MaterialReactTable from "material-react-table";
 import { Tooltip } from "react-tooltip";
 import "../../assets/css/Mui.css";
 
-const MaterialTable = ({ data, handleEdit, handleDelete, handleModifyRole, handleWarning,columnsList, name, hideEdit, hideDelete , showRoleIcon, showWarningIcon , showSuspendIcon}) => {
+const MaterialTable = ({ data, handleEdit, handleDelete, handleSuspend, handleModifyRole, handleWarning,columnsList, name, hideEdit, hideDelete , showRoleIcon, showWarningIcon , showSuspendIcon}) => {
   const columns = useMemo(
     () =>columnsList,
     []
@@ -66,7 +66,7 @@ const MaterialTable = ({ data, handleEdit, handleDelete, handleModifyRole, handl
               data-tooltip-id="suspend"
               data-tooltip-content={`Suspendre membre`}
               className={`hover:cursor-pointer text-xl text-red-400 border-none outline-none  ${showSuspendIcon ? "block":"hidden"}`}
-              onClick={() => alert("tu m'as cliqué oh")}
+              onClick={() => handleSuspend(row.original, row.index)}
             />
           </Box>
         )}

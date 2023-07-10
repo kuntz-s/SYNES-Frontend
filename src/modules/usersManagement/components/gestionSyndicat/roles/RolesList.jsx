@@ -184,14 +184,16 @@ const RolesList = ({ roles, organs, permissions }) => {
     decimalSeparator: '.',
     showLabels: true,
     useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
+    useKeysAsHeaders: true,
+    showTitle:true,
+    filename:"LISTE DES ROLES DU SYNES",
+    title:"ROLES DU SYNES",
   };
   
   const csvExporter = new ExportToCsv(csvOptions)
 
   const exportData =() => {
-    csvExporter.generateCsv(data)
+    csvExporter.generateCsv(roles)
   }
 
   const handleChange = (e) => {

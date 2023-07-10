@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import {useNavigate} from "react-router";
 import {ExportToCsv} from "export-to-csv";
 import {
   resetMember,
@@ -9,6 +10,7 @@ import {
   postMember,
   updateMemberRole
 } from "../../../../redux/gestionMembreSlice";
+import { suspendMember, postAvertissement } from "../../services/gestionMembreService";
 import { availableRolesList, transformRolesData } from "../Constant";
 import StatTitle from "../../../../components/baseComponents/StatTitle";
 import Button from "../../../../components/baseComponents/Button";
@@ -16,10 +18,12 @@ import MaterialTable from "../../../../components/baseComponents/MaterialTable";
 import MemberModal from "./MemberModal";
 import ModifyRoleModal from "./ModifyRoleModal";
 import WarningModal from "./WarningModal";
+import SuspendModal from "./SuspendModal";
 import noProfile from "../../../../assets/img/profile1.png";
 
 const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { memberLoading, memberError, memberSuccess, updateMemRoleLoading,updateMemRoleError,updateMemRoleSuccess } = useSelector(
     (state) => state.gestionMembre
   );
@@ -29,7 +33,9 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
   const [open, setOpen] = useState(false);
   const [openRole, setOpenRole] = useState(false);
   const [openWarning, setOpenWarning] = useState(false);
+  const [openSuspend, setOpenSuspend] = useState(false);
   const [warnLoading , setWarnLoading ] = useState(false);
+  const [suspendLoading, setSuspendLoading] = useState(false);
   const [rolesOption ,setRolesOption] = useState([])
   const [selectedMember, setSelectedMember] = useState("")
   const [memberInfo, setMemberInfo] = useState({
@@ -80,7 +86,7 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
       header: "Photo",
       muiTableHeadCellProps: { sx: { color: "#475569" } }, //optional custom props
       Cell: ({ cell }) => (
-        <div className="w-full">
+        <div className="w-full hover:cursor-pointer" onClick={() => {navigate("/social/profil/"+cell.row.original.id)}}>
           {cell.getValue() ? (
             <img
               src={cell.getValue()}
@@ -155,6 +161,26 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
       Cell: ({ cell }) => <span>{cell.getValue()}</span>, //optional custom cell render
     },
   ];
+  
+  
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: true,
+    showTitle:true,
+    filename:"LISTE DES MEMBRES DU SYNES",
+    title:"MEMBRES DU SYNES",
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions)
+
+  const exportData =() => {
+    csvExporter.generateCsv(listeMembres.filter((mem) => mem.id !== 0 ))
+  }
+
 
   const handleModifyRole = (data, index) => {
     if(data.membre.role.nom === "Secretaire Congres"){
@@ -167,11 +193,41 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
   }
 
   const handleWarning = (data, index)=> {
-    if(data.membre.role.nom === "Secretaire Congres"){
-      toast.error("Vous n'avez pas le droit d'avertir ce role")
-    } else {
+   
       setSelectedMember(data)
       setOpenWarning(true)
+    
+  }
+
+  const handleSuspend = (data, index)=> {
+    if(data.membre.role.nom === "Secretaire Congres"){
+      toast.error("Vous n'avez pas le droit de suspendre ce role")
+    } else {
+      setSelectedMember(data)
+      setOpenSuspend(true)
+    }
+  }
+
+  const UpdateSuspendStatus = async () => {
+    setSuspendLoading(true)
+    try {
+        const res = await suspendMember(selectedMember.id);
+        console.log("res is ",res)
+        if(res.status === 200){
+          toast.success(selectedMember.membre.suspendu ? "Suspension levée avec succès":"Membre suspendu avec succès");
+          dispatch(getMembersList());
+        } else {
+          toast.error("une erreur est survenue lors de la suspension");
+        }
+        setOpenSuspend(false);
+        setSuspendLoading(false);
+        setSelectedMember("")
+        
+    } catch(error){
+      toast.error("une erreur est survenue lors de la suspension");
+      setOpenSuspend(false);
+      setSuspendLoading(false);
+      setSelectedMember("")
     }
   }
 
@@ -212,31 +268,36 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
     dispatch(updateMemberRole({memberInfo:ans, restrict:restrict}))
   }
 
-  const addWarning = (message ) => {
-    console.log("message", message)
+  const addWarning = async (warningId ) => {
+    setWarnLoading(true);
+    setSuspendLoading(true)
+    try {
+        const res = await postAvertissement({id:warningId, idMembre:selectedMember.id});
+        console.log("res is ",res)
+        if(res.status === 200){
+          toast.success("Avertissement du membre effectuée avec succès");
+          dispatch(getMembersList());
+        } else {
+          toast.error("une erreur est survenue lors de l'avertissement");
+        }
+        setOpenWarning(false);
+        setWarnLoading(false);
+        setSelectedMember("")
+        
+    } catch(error){
+      toast.error("une erreur est survenue lors de l'avertissement");
+      setOpenWarning(false);
+      setWarnLoading(false);
+      setSelectedMember("")
+    }
   }
 
-  const csvOptions = {
-    fieldSeparator: ',',
-    quoteStrings: '"',
-    decimalSeparator: '.',
-    showLabels: true,
-    useBom: true,
-    useKeysAsHeaders: false,
-    headers: columns.map((c) => c.header),
-  };
-  
-  const csvExporter = new ExportToCsv(csvOptions)
-
-  const exportData =() => {
-    csvExporter.generateCsv(data)
-  }
 
   return (
     <div className="bg-white w-full  p-4 rounded-xl h-fit overflow-hidden mt-8">
       <div className="flex flex-col md:flex-row  justify-between mt-2">
         <StatTitle
-          title={`Nombre de membres ${listeMembres ? listeMembres.length : 0}`}
+          title={`Nombre de membres ${listeMembres ? listeMembres.length -1 : 0}`}
         />
         <div className="flex ">
           <Button
@@ -257,7 +318,7 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
       </div>
       <div className="my-4 ">
         <MaterialTable
-          data={listeMembres}
+          data={listeMembres.filter((mem) => mem.id !== 0 )}
           columnsList={columns}
           name="université"
           hideDelete={true}
@@ -267,6 +328,7 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
           showSuspendIcon={true}
           handleModifyRole={handleModifyRole}
           handleWarning = {handleWarning}
+          handleSuspend = {handleSuspend}
         />
       </div>
       <MemberModal
@@ -288,10 +350,18 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
       />
       <WarningModal
         open={openWarning}
-        handleClose={ () => setOpenWarning(false)}
+        handleClose={ () => {setOpenWarning(false); setSelectedMember("")}}
         addWarning = {addWarning}
         isLoading={warnLoading}
         data={selectedMember}
+      />
+      
+      <SuspendModal
+        open={openSuspend}
+        handleClose={ () => {setOpenSuspend(false); setSelectedMember("")}}
+        data={selectedMember}
+        isLoading = {suspendLoading}
+        handleSuspend={UpdateSuspendStatus}
       />
       <ToastContainer />
     </div>
