@@ -4,7 +4,7 @@ import {
     BsFillArrowLeftCircleFill,
   } from "react-icons/bs";
   import { BiBell } from "react-icons/bi";
-import profile from "../../../assets/img/teacher.png";
+import noProfile from "../../../assets/img/profile1.png";
 
 const DashboardTopbar = ({shrink, changeShrink}) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
@@ -35,7 +35,7 @@ const DashboardTopbar = ({shrink, changeShrink}) => {
               {userInfo.membre.noms} {userInfo.membre.prenom}
             </p>
             <img
-              src={profile}
+              src={userInfo.membre.photo ? userInfo.membre.photo:noProfile}
               className="shrink-0 rounded-full  h-[30px] w-[30px] md:h-[40px] md:w-[40px] object-cover"
             />
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter, BsEye } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
+import {ExportToCsv} from "export-to-csv";
 import {
   postRole,
   getRolesList,
@@ -177,6 +178,22 @@ const RolesList = ({ roles, organs, permissions }) => {
     },
   ];
 
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions)
+
+  const exportData =() => {
+    csvExporter.generateCsv(data)
+  }
+
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -279,9 +296,7 @@ const RolesList = ({ roles, organs, permissions }) => {
           <Button
             title="Exporter en csv"
             icon={<BsPrinter className="mr-2" />}
-            handleClick={() => {
-              alert("exported");
-            }}
+            handleClick={exportData}
             filled={true}
             className="rounded-md font-semibold"
           />

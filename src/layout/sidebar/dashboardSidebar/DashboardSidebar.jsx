@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { BsCalendar2Date } from "react-icons/bs";
-import { FaChalkboardTeacher, FaArrowRight } from "react-icons/fa";
+import { FaChalkboardTeacher, FaArrowLeft } from "react-icons/fa";
 import { GrTransaction } from "react-icons/gr";
 import { MdDashboard } from "react-icons/md";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -36,16 +36,10 @@ const sidebarItems = [
     icon: <GrTransaction />,
   },
   {
-    title: "A propos",
-    permission: null,
-    link: "/dashboard/a-propos",
-    icon: <AiOutlineInfoCircle />,
-  },
-  {
     title: "Retour accueil",
     permission: null,
-    link: "/accueil",
-    icon: <FaArrowRight />,
+    link: "/actualite",
+    icon: <FaArrowLeft />,
   },
 ];
 

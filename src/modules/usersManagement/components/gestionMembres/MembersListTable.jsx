@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import {ExportToCsv} from "export-to-csv";
 import {
   resetMember,
   getMembersList,
@@ -215,7 +216,21 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
     console.log("message", message)
   }
 
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
   
+  const csvExporter = new ExportToCsv(csvOptions)
+
+  const exportData =() => {
+    csvExporter.generateCsv(data)
+  }
 
   return (
     <div className="bg-white w-full  p-4 rounded-xl h-fit overflow-hidden mt-8">
@@ -234,9 +249,7 @@ const MembersListTable = ({ listeMembres, restrict, universities, roles }) => {
           <Button
             title="Exporter en csv"
             icon={<BsPrinter className="mr-2" />}
-            handleClick={() => {
-              alert("exported");
-            }}
+            handleClick={exportData}
             filled={true}
             className="rounded-md font-semibold"
           />

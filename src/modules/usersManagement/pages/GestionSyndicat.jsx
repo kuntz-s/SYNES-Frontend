@@ -10,6 +10,7 @@ const GestionSyndicat = () => {
   const { universities, organs, roles, permissions } = useSelector(
     (state) => state.gestionSyndicat
   );
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
   useEffect(() => {
     dispatch(getUniversitiesList());
     dispatch(getOrgansList());
@@ -27,14 +28,14 @@ const GestionSyndicat = () => {
           <p className="font-roboto text-slate-700 text-md">
             Bienvenue{"  "}
             <span className="capitalize text-xl font-semibold text-secondary leading-5 tracking-wide">
-              Nchouwet Stephane
+              {userInfo.membre.noms + " "+userInfo.membre.prenom}
             </span>
           </p>
           <p className="text-slate-700 text-md mt-1">
             Vous ètes connectés en tant que{" "}
             <span className="text-secondary font-bold">
               {" "}
-              sécrétaire section synes
+              {userInfo.membre.role.nom}
             </span>
           </p>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+import {ExportToCsv} from "export-to-csv";
 import {
   postOrgan,
   getOrgansList,
@@ -127,6 +128,22 @@ const OrgansList = ({ organs }) => {
     },
   ];
 
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions)
+
+  const exportData =() => {
+    csvExporter.generateCsv(data)
+  }
+
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -181,6 +198,7 @@ const OrgansList = ({ organs }) => {
     }
   };
 
+  
   return (
     <div className="bg-white  p-4 rounded-xl h-fit ">
       <div className="flex flex-col md:flex-row  justify-between mt-2">
@@ -196,9 +214,7 @@ const OrgansList = ({ organs }) => {
           <Button
             title="Exporter en csv"
             icon={<BsPrinter className="mr-2" />}
-            handleClick={() => {
-              alert("exported");
-            }}
+            handleClick={exportData}
             filled={true}
             className="rounded-md font-semibold"
           />

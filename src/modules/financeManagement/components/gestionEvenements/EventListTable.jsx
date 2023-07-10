@@ -1,7 +1,6 @@
 import React from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
-/* import SockJS from "sockjs-client";
-import Stomp from "stompjs"; */
+import {ExportToCsv} from "export-to-csv";
 import StatTitle from "../../../../components/baseComponents/StatTitle";
 import Button from "../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../components/baseComponents/MaterialTable";
@@ -27,6 +26,8 @@ const imgList = [
 var stompClient=null;
 
 const EventListTable = ({ data, handleOpen,handleDelete }) => {
+
+
 
   const columns = [
     {
@@ -79,30 +80,21 @@ const EventListTable = ({ data, handleOpen,handleDelete }) => {
     }
   ];
 
-  /* const connect = () => {
-    const socket = new SockJS('http://localhost:8080/stomp-endpoint');
-    // Create a STOMP client
-   stompClient = Stomp.over(socket);
-    // Set up STOMP client
-    stompClient.connect({},onConnected,onError);
-  }
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions)
 
-  const onConnected = () => {
-    console.log("je suis de nouveau connecté connecté")
-    stompClient.subscribe('/topic/sendNotification', onMessageReceived);
+  const exportData =() => {
+    csvExporter.generateCsv(data)
   }
-
-  const onError = () => {
-    console.log("il y'a une erreur")
-  }
-
-  const onMessageReceived = (payload) => {
-    console.log("je suis ici oh dans message received")
-    var newPayload = JSON.parse(payload.body);
-    
-    console.log("payload", payload, " and parsed payload ", newPayload);
-  }
-  */
   
 
   return (
@@ -122,9 +114,7 @@ const EventListTable = ({ data, handleOpen,handleDelete }) => {
           <Button
             title="Exporter en csv"
             icon={<BsPrinter className="mr-2" />}
-            handleClick={() => {
-              alert("exported");
-            }}
+            handleClick={exportData}
             filled={true}
             className="rounded-md font-semibold"
           />

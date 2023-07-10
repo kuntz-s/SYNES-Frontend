@@ -1,5 +1,6 @@
 import React from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
+import {ExportToCsv} from "export-to-csv";
 import StatTitle from "../../../../components/baseComponents/StatTitle";
 import Button from "../../../../components/baseComponents/Button";
 import MaterialTable from "../../../../components/baseComponents/MaterialTable";
@@ -90,6 +91,23 @@ const TransactionListTable = ({ data, handleOpen }) => {
       ];
       
     
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions)
+
+  const exportData =() => {
+    csvExporter.generateCsv(data)
+  }
+  
+
       return (
         <div className="bg-white w-full  p-4 rounded-xl h-fit overflow-hidden mt-8">
           <div className="flex flex-col md:flex-row  justify-between mt-2">
@@ -107,9 +125,7 @@ const TransactionListTable = ({ data, handleOpen }) => {
               <Button
                 title="Exporter en csv"
                 icon={<BsPrinter className="mr-2" />}
-                handleClick={() => {
-                  alert("exported");
-                }}
+                handleClick={exportData}
                 filled={true}
                 className="rounded-md font-semibold"
               />

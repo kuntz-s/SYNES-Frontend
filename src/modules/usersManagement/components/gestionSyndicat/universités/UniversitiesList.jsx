@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsPlus, BsPrinter } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import {ExportToCsv} from "export-to-csv";
 import {
   postUniv,
   getUniversitiesList,
@@ -116,6 +117,22 @@ const UniversitiesList = ({ universities }) => {
     },
   ];
 
+  const csvOptions = {
+    fieldSeparator: ',',
+    quoteStrings: '"',
+    decimalSeparator: '.',
+    showLabels: true,
+    useBom: true,
+    useKeysAsHeaders: false,
+    headers: columns.map((c) => c.header),
+  };
+  
+  const csvExporter = new ExportToCsv(csvOptions)
+
+  const exportData =() => {
+    csvExporter.generateCsv(universities)
+  }
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -211,9 +228,7 @@ const UniversitiesList = ({ universities }) => {
           <Button
             title="Exporter en csv"
             icon={<BsPrinter className="mr-2" />}
-            handleClick={() => {
-              alert("exported");
-            }}
+            handleClick={exportData}
             filled={true}
             className="rounded-md font-semibold"
           />
