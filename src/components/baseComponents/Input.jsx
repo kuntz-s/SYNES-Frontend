@@ -89,7 +89,7 @@ const Input = ({
         ),
       }}
       InputLabelProps={{
-        style:{top:"-2px", fontSize:"19px"}
+        style:{top:"-2px", fontSize:"15px"}
       }}
       name={name}
       margin="dense"

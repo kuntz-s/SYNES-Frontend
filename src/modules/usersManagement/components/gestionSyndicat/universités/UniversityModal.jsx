@@ -1,14 +1,15 @@
 import React from "react";
 import { BsX, BsPlus } from "react-icons/bs";
 import { FaUniversity } from "react-icons/fa";
+import {FiEdit3} from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
 import { ToastContainer, toast } from "react-toastify";
 import Modal from "@mui/material/Modal";
-import ModalWrapper from "../../../../components/baseComponents/ModalWrapper";
-import Input from "../../../../components/baseComponents/Input";
-import Button from "../../../../components/baseComponents/Button";
+import ModalWrapper from "../../../../../components/baseComponents/ModalWrapper";
+import Input from "../../../../../components/baseComponents/Input";
+import Button from "../../../../../components/baseComponents/Button";
 
-const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity, isLoading }) => {
+const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity, modifyUniversity, isLoading , modify}) => {
 
   const handleAdd = () => {
     if(data.nom && data.localisation){
@@ -24,6 +25,31 @@ const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity,
     }
   }
 
+  const handleModify = () => {
+    const value = modify.modifyValue;
+    if(value.nom === data.nom && value.localisation === data.localisation && value.logo === data.logo){
+      toast.error("Veuillez modifier au moins un champ", {
+        position: "top-center",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    } else {
+      if(data.nom && data.localisation){
+          modifyUniversity();
+      } else {
+        toast.error("Veuillez renseigner les champs obligatoires", {
+          position: "top-center",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      }
+    }
+  }
+
   return (
     <Modal
       open={open}
@@ -33,7 +59,7 @@ const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity,
     >
       <div className=" absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white py-4 px-6 rounded-md w-[90vw] md:w-[75vw] lg:w-[50vw]">
         <ModalWrapper
-          title="Ajouter une université"
+          title={!modify.modifyStatus? "Ajouter une université":"Modifier une université"}
           description="Veuillez remplir les informations çi dessous"
         />
         <div className="[&>*]:mb-2">
@@ -110,9 +136,9 @@ const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity,
           </div>
           <div className="w-full mt-4">
           <Button
-            title="Ajouter"
-            icon={<BsPlus className="mr-2 scale-[1.8]" />}
-            handleClick={handleAdd}
+            title={!modify.modifyStatus? "Ajouter" : "Modifier"}
+            icon={!modify.modifyStatus?<BsPlus className="mr-2 scale-[1.8]" />: <FiEdit3 className="mr-2 scale-[1.2]" />}
+            handleClick={()=> {!modify.modifyStatus ?handleAdd():handleModify()}}
             filled={true}
             loading={isLoading}
             className="mx-auto py-2 font-semibold bg-secondary border-secondary hover:bg-white hover:shadow-md hover:text-secondary rounded-md"
@@ -120,7 +146,6 @@ const UniversityModal = ({ open, handleClose, data, handleChange, addUniversity,
           </div>
         </div>
         
-      <ToastContainer/>
       </div>
     </Modal>
   );

@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { BsEyeFill, BsEyeSlashFill  } from "react-icons/bs";
+import {GoMail} from "react-icons/go";
 import { useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { loginUser } from "../../../redux/userSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import Input from "../../../components/baseComponents/Input";
 import loginImage from "../../../assets/img/loginIllustration.png";
@@ -25,12 +29,35 @@ const imageContainerVariants = {
 
 const LoginComponent = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, loading, success } = useSelector(
+    (state) => state.user
+  );
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    
+  const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      navigate("/social/actualite");
+    } else {
+      if (error && !success) {
+        toast.error("Utilisateur non trouvé", {
+          position: "top-right",
+          autoClose: 3000,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      } else if (success && !error) {
+        navigate("/social/actualite");
+      }
+    }
+  }, [error, success]);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -39,29 +66,18 @@ const LoginComponent = () => {
   };
 
   const handleLogin = () => {
-    if (!isLoading) {
-      setIsLoading(true);
-      setTimeout(() => {
-        if (!loginInfo.email || !loginInfo.password) {
-          toast.error("Veuillez entrer des valeurs correctes", {
-            position: "top-right",
-            autoClose: 3000,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "light",
-          });
-          setIsLoading(false);
-        } else {
-          toast.success("connexion réussie", {
-            position: "top-right",
-            autoClose: 3000,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "light",
-          });
-          navigate("/social");
-        }
-      }, 2000);
+    if (!loginInfo.email || !loginInfo.password) {
+      toast.error("Veuillez renseigner des valeurs sur tous les champs", {
+        position: "top-right",
+        autoClose: 3000,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    } else {
+      dispatch(
+        loginUser({ email: loginInfo.email, password: loginInfo.password })
+      );
     }
   };
 
@@ -102,13 +118,24 @@ const LoginComponent = () => {
               type="email"
               value={loginInfo.email}
               handleChange={handleChange}
+              icon={<GoMail/>}
+              iconStart
               style={{ borderRadius: 0, backgroundColor: "transparent" }}
             />
             <Input
               title="Mot de passe"
               name="password"
+              type={showPassword ? "text" : "password"}
               value={loginInfo.password}
               handleChange={handleChange}
+              icon={
+                showPassword ? (
+                  <BsEyeSlashFill className="text-primary hover:text-primary/90 hover:cursor-pointer" onClick={() => setShowPassword(false)} />
+                ) : (
+                  <BsEyeFill className="text-primary  hover:text-primary/90 hover:cursor-pointer" onClick={() => setShowPassword(true)}  />
+                )
+              }
+              iconEnd
               style={{ borderRadius: 0, backgroundColor: "transparent" }}
             />
           </div>
@@ -117,7 +144,7 @@ const LoginComponent = () => {
               className="bg-primary text-white w-full py-2 mt-4 text-sm hover:bg-primary/90 hover:cursor-pointer"
               onClick={handleLogin}
             >
-              {isLoading ? (
+              {loading ? (
                 <CircularProgress size="18px" color="inherit" />
               ) : (
                 <span>connexion</span>
